@@ -58,6 +58,16 @@
     if(a && !document.getElementById("boot")) location.href = a.href;
   });
 
+  /* ---- project folders: open the one targeted by the URL hash ---- */
+  (function(){
+    function openHash(){
+      var id = decodeURIComponent((location.hash || "").slice(1)); if(!id) return;
+      var el = document.getElementById(id);
+      if(el && el.tagName === "DETAILS"){ el.open = true; el.scrollIntoView(); }
+    }
+    openHash(); window.addEventListener("hashchange", openHash);
+  })();
+
   /* ---- Play button on the Escape Subsector 086 card (games page) ---- */
   (function(){
     var btn = document.querySelector("[data-play-escape]");

@@ -211,3 +211,16 @@ body{padding-bottom:3.4rem}
 @media (max-width:520px){#player .pl-in{gap:.5rem;padding:.3rem .6rem}#player .pl-vol span{display:none}#player input[type=range]{width:3.8rem}#player .pl-b{min-width:1.8rem;padding:.15rem .25rem}}
 
 .backbar{margin:2.6rem 0 .5rem;padding-top:1.2rem;border-top:1px dashed var(--line)}
+
+/* collapsible project folders */
+details.folder{padding:0}
+details.folder>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.8rem;padding:.75rem 1rem;font-family:var(--ui);color:var(--red);letter-spacing:.1em;text-transform:uppercase;font-size:.95rem}
+details.folder>summary::-webkit-details-marker{display:none}
+details.folder>summary::before{content:"[+]";flex:none}
+details.folder[open]>summary::before{content:"[-]"}
+details.folder>summary .status{margin-left:auto;flex:none;font-size:.7rem}
+details.folder>summary:hover,details.folder>summary:focus-visible{background:rgba(255,59,48,.08)}
+details.folder>summary:focus-visible{outline:1px solid var(--red);outline-offset:-3px}
+details.folder[open]>summary{border-bottom:1px dashed var(--line)}
+.folder-body{padding:1.1rem 1.2rem 1.2rem}
+@media (max-width:520px){details.folder>summary{flex-wrap:wrap;gap:.4rem .8rem}}
