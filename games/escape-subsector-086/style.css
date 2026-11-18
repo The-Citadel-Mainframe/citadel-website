@@ -1,0 +1,16 @@
+/* ESCAPE SUBSECTOR 086 — uses the Citadel terminal theme (css/terminal.css) */
+body.es-open{overflow:hidden}
+.es-overlay{position:fixed;left:0;right:0;top:0;bottom:3.4rem;z-index:40;background:var(--bg,#050000);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.5rem;overflow:hidden}
+.es-host{margin:1rem 0}
+.es-wrap{position:relative;margin:0 auto;max-width:100%}
+.es-wrap canvas{display:block;border:1px solid var(--red);background:#050000;box-shadow:0 0 18px rgba(255,59,48,.22);touch-action:none;user-select:none;-webkit-user-select:none}
+.es-screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,0,0,.86);text-align:center}
+.es-screen.on{display:flex}
+.es-art{margin:0 0 .8em;font-family:var(--ui);line-height:1.15;color:var(--red);text-shadow:0 0 8px rgba(255,59,48,.6);white-space:pre}
+.es-btns{display:flex;flex-wrap:wrap;gap:.2rem;justify-content:center}
+.es-btns .btn{background:transparent;font-family:var(--ui);cursor:pointer}
+.es-btns .btn:hover,.es-btns .btn:focus-visible{background:var(--red);color:#000}
+.es-parry{display:none;position:absolute;right:.6rem;bottom:.6rem;background:rgba(5,0,0,.85);font-family:var(--ui);font-size:1.1rem;padding:.7rem 1.4rem;touch-action:none}
+@media (pointer:coarse){.es-parry.on{display:block}}
+.es-help{margin:.5rem auto 0;text-align:center;font-size:.72rem;letter-spacing:.06em;color:var(--grey,#a3a3a3);text-shadow:none}
+.es-music{display:block;margin-top:.3rem;color:var(--red,#ff3b30);text-transform:uppercase;letter-spacing:.08em}
