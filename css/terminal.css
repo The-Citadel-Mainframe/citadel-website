@@ -44,9 +44,9 @@ a:hover,a:focus-visible{background:var(--red);color:#000;text-shadow:none;outlin
 
 /* typography */
 h1,h2,h3{font-weight:400;margin:0}
-h2{display:flex;align-items:center;gap:.7rem;font-size:1.15rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin:2.6rem 0 1.1rem}
-h2::before{content:">";color:var(--hi)}
-h2::after{content:"";flex:1;border-bottom:3px double var(--line)}
+h1.page,h2{display:flex;align-items:center;gap:.7rem;font-size:1.15rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin:2.6rem 0 1.1rem}
+h1.page::before,h2::before{content:">";color:var(--hi)}
+h1.page::after,h2::after{content:"";flex:1;border-bottom:3px double var(--line)}
 h3{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--hi)}
 p{margin:.7rem 0}
 .dim{color:var(--grey);text-shadow:none}

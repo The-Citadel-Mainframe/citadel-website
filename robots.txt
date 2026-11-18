@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://the-citadel-mainframe.github.io/citadel-website/sitemap.xml
