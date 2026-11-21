@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CitadelOS &amp; Cortega — Development Timeline — The Citadel</title>
+<meta name="description" content="Development timeline of CitadelOS, the independent operating system by The Citadel, and Cortega, its local AI assistant. Report 01: intents, editions, validated components and declared limits.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://the-citadel-mainframe.github.io/citadel-website/citadelos.html">
+<meta name="theme-color" content="#050000">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta property="og:title" content="CitadelOS &amp; Cortega — Development Timeline — The Citadel">
+<meta property="og:description" content="Development timeline of CitadelOS, the independent operating system by The Citadel, and Cortega, its local AI assistant.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://the-citadel-mainframe.github.io/citadel-website/citadelos.html">
+<meta property="og:site_name" content="The Citadel">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://the-citadel-mainframe.github.io/citadel-website/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Citadel emblem: a red and black shield with a padlock and a code symbol">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CitadelOS &amp; Cortega — Development Timeline — The Citadel">
+<meta name="twitter:description" content="Development timeline of CitadelOS, the independent operating system by The Citadel, and Cortega, its local AI assistant.">
+<meta name="twitter:image" content="https://the-citadel-mainframe.github.io/citadel-website/assets/og-image.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="css/terminal.css">
+<link rel="stylesheet" href="css/citadelos.css">
+</head>
+<body data-page="citadelos">
+<a class="skip" href="#main">Skip to content</a>
+<div class="screen">
+<div class="statusbar"><span><span class="led"></span><b>CITADEL-OS v1.0</b> // CONTINUITY PROTOCOL</span><span>SYS.TIME <span id="clock">--:--</span> // LINK: SECURE</span></div>
+
+<main id="main">
+
+<h1 class="page">CitadelOS &amp; Cortega</h1>
+<p>Development log of CitadelOS, an operating system independent from Android, and of Cortega, its local AI assistant. Reports are listed in chronological order: the first at the top, the latest at the bottom. Each report states what is validated and what is not.</p>
+
+<figure class="cortega-fig">
+  <div class="cortega-wrap" role="img" aria-label="ASCII art portrait of Cortega, the local AI assistant of CitadelOS. Her eyes follow the cursor.">
+    <pre class="ascii cortega" id="cortega-art" aria-hidden="true"></pre>
+  </div>
+  <noscript><p class="small dim">JavaScript is required to display the animated ASCII portrait of Cortega.</p></noscript>
+  <figcaption class="small dim">Cortega — ASCII rendering of the logo. The eyes follow the cursor.</figcaption>
+</figure>
+
+<h2>Timeline</h2>
+<p class="t-axis">Oldest report at the top</p>
+
+<div class="timeline">
+
+  <section class="t-node" id="report-01" aria-labelledby="r01">
+    <span class="t-when">2026-11-22 // Report 01</span>
+    <h3 id="r01">Project intents and status</h3>
+    <p>First report. It defines CitadelOS and Cortega, lists the intents of the project, and states which components are validated and which are not. It is based on the project documents up to 2026-11-20.</p>
+
+    <details class="panel folder" id="r01-citadelos" open><summary><span class="fname">Section // What is CitadelOS</span></summary>
+    <div class="folder-body">
+      <p>CitadelOS is an operating system independent from Android. It is developed in Go, using only the standard library, and builds for linux/arm64 and linux/amd64.</p>
+      <h4>Intents</h4>
+      <ul class="tick">
+        <li><b>Independence from Android.</b> No Android framework. Own init (citadel-init, PID 1). Static Go userspace.</li>
+        <li><b>Anonymous network as the only path.</b> All Internet traffic goes through Tor. There is no alternative path.</li>
+        <li><b>Recognition between Citadel devices on the LAN only.</b> Two devices recognise each other as OPERATOR-N, where N is random and regenerated at every scan. No persistent identifier, no MAC address, no hostname is exposed.</li>
+        <li><b>Network Discovery (cnd).</b> Scans authorised networks. Non-Citadel devices stand out by difference. The gateway is labelled "mother".</li>
+        <li><b>Interface.</b> Aesthetics derived from this website. Command autocompletion for inexperienced users.</li>
+        <li><b>Zero cost.</b> No paid APIs, no telemetry.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r01-cortega" open><summary><span class="fname">Section // What is Cortega</span></summary>
+    <div class="folder-body">
+      <p>Cortega is the local AI assistant of CitadelOS. It interprets requests in natural language and translates them into system commands. It operates only within the Citadel perimeter.</p>
+      <h4>Intents</h4>
+      <ul class="tick">
+        <li><b>Model.</b> Qwen3-0.6B (Apache-2.0), run locally with llama.cpp on the loopback interface. No upload, no telemetry.</li>
+        <li><b>Precision profiles</b>, chosen by the operator: ECO (Q4_0), STANDARD (Q8_0), PRECISION (f16 or BF16).</li>
+        <li><b>Constrained output.</b> The model emits only an intent in JSON, {action, target, detail}, taken from a closed list of actions and enforced by a GBNF grammar. Risk and confirmation are decided by the code, not by the model.</li>
+        <li><b>Mandatory confirmation.</b> Every executable action requires confirmation from the operator. port_scan and discover_hosts require the word CONFERMA.</li>
+        <li><b>Perimeter.</b> For Cortega the world is Citadel. She answers about Citadel, CitadelOS and herself. Friendly conversation is allowed. Topics outside the perimeter are refused by the code, without querying the model.</li>
+        <li><b>Grounded answers.</b> Local knowledge base with BM25 search. Answers include their sources.</li>
+        <li><b>Learning as a spectator.</b> She reads this website and the public YouTube channel, without login, only through Tor, only from allowlisted hosts. Learned content is treated as untrusted data and cannot issue actions.</li>
+        <li><b>Networks.</b> Only IP addresses inside authorised networks. No hostnames.</li>
+        <li><b>Generated tools.</b> Saved and analysed statically, never run automatically. Execution only with /run, confirmation and a timeout.</li>
+        <li><b>Audit.</b> Date, outcome and type of action. Never the text of the target.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r01-principles"><summary><span class="fname">Section // Principles</span></summary>
+    <div class="folder-body">
+      <dl class="kv">
+        <dt>Anonymity</dt><dd>All traffic through Tor. No persistent device identifier. No telemetry.</dd>
+        <dt>Human control</dt><dd>Every executable action is confirmed by the operator. Risk is decided by code. The AI of Father waits for human input and does not act autonomously.</dd>
+        <dt>Perimeter</dt><dd>Cortega works only inside Citadel. Only authorised networks and allowlisted hosts. Learned content cannot issue actions.</dd>
+        <dt>Zero cost</dt><dd>No paid APIs. Local execution of the model.</dd>
+      </dl>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r01-editions"><summary><span class="fname">Section // Editions: Operator and Father</span></summary>
+    <div class="folder-body">
+      <p>CitadelOS has two editions: <b>Operator</b>, a field device, and <b>Father</b>, a control station. The current priority is Father. Operator is in backup and its resumption is postponed.</p>
+      <h4>Citadel Father</h4>
+      <ul class="tick">
+        <li><b>Role.</b> Control station to which operators connect. Target hardware: laptop LX15PRO (Ryzen 7 5700U, 16 GB).</li>
+        <li><b>Operator link.</b> Direct LAN and Tor onion service. TCP handshake with an HMAC-SHA256 proof.</li>
+        <li><b>Signed directives.</b> Ed25519 signatures. Allowed actions: ping, status, scan_lan, message. Expiry after 60 seconds, anti-replay. The operator verifies with the public key only.</li>
+        <li><b>Local interface.</b> Web UI served by Father: HTTPS, access token, HttpOnly and Secure cookie, limit on login attempts. A dedicated graphical shell is planned.</li>
+        <li><b>Base.</b> Debian 13 stable. Go services run as systemd units: citadel-father, citadel-llama, citadel-cortega.</li>
+        <li><b>Device management (citadel-devd).</b> Coldplug and hotplug, automatic loading of kernel modules, device registry.</li>
+        <li><b>OS–AI symbiosis.</b> Project goal: desktop and drivers that adapt to what is connected.</li>
+        <li><b>Human input.</b> The AI of Father always waits for human input and does not act autonomously.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r01-status" open><summary><span class="fname">Section // Project status at 2026-11-22</span></summary>
+    <div class="folder-body">
+      <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Component</th><th scope="col">State</th><th scope="col">Detail</th></tr></thead>
+        <tbody>
+          <tr><td>citadel-init (PID 1)</td><td><span class="status">Validated</span></td><td>In QEMU: boot, switch_root, service supervision.</td></tr>
+          <tr><td>cnd, Operator protocol</td><td><span class="status">Validated</span></td><td>On two network namespaces with veth.</td></tr>
+          <tr><td>Supervised Tor service</td><td><span class="status part">Partial</span></td><td>SOCKS active, automatic restart validated. Full bootstrap not validated.</td></tr>
+          <tr><td>citadel-father, signed directives</td><td><span class="status">Validated</span></td><td>With tests, plus an end-to-end test on loopback.</td></tr>
+          <tr><td>Father web UI</td><td><span class="status">Validated</span></td><td>On Windows (LX15PRO), loopback.</td></tr>
+          <tr><td>citadel-devd</td><td><span class="status">Validated</span></td><td>In QEMU x86_64.</td></tr>
+          <tr><td>UEFI boot (UKI)</td><td><span class="status">Validated</span></td><td>In QEMU with OVMF.</td></tr>
+          <tr><td>Cortega: policy, perimeter, knowledge base, grammar</td><td><span class="status part">Unit tests</span></td><td>Unit tests pass.</td></tr>
+          <tr><td>Cortega with a real model</td><td><span class="status tbc">Not validated</span></td><td>—</td></tr>
+          <tr><td>Real hardware</td><td><span class="status tbc">Not validated</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r01-limits"><summary><span class="fname">Section // Declared limits</span></summary>
+    <div class="folder-body">
+      <ul class="tick">
+        <li>Redmi 9T suspended: bootloader unlock failed. Galaxy S8 and Galaxy S20 evaluated as alternatives. No ARM hardware is currently available.</li>
+        <li>A single fleet key is shared by the whole fleet: no revocation for a single operator. Accepted choice.</li>
+        <li>Quality of the answers of Qwen3-0.6B, tokens per second and thermal behaviour: not measured.</li>
+        <li>Wi-Fi (8852BE), amdgpu, NVMe and Secure Boot on the LX15PRO: not verified.</li>
+        <li>/run has no operating-system-level isolation. The static analysis is heuristic.</li>
+        <li>The perimeter filter is lexical: external topics that use only words present in the knowledge base can pass.</li>
+        <li>The web UI certificate is self-signed: the browser shows a warning at first access.</li>
+      </ul>
+    </div>
+    </details>
+  </section>
+
+  <section class="t-node pending t-end" aria-labelledby="rnext">
+    <span class="t-when">Next report // pending</span>
+    <h3 id="rnext">New reports are added below</h3>
+    <p class="small">The next report will appear here, after Report 01.</p>
+  </section>
+
+</div>
+
+<div class="backbar"><a class="btn" href="index.html">Back to Terminal</a><a class="btn" href="home.html">Home</a></div>
+</main>
+<div class="rule" aria-hidden="true">════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════</div>
+<footer>
+<p class="motto">The Citadel — a bastion dedicated to Continuity</p>
+<p>&copy; <span class="year">2026</span> Citadel. All rights reserved. <a href="contact.html">Contact</a></p>
+</footer>
+</div>
+<script src="js/config.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/cortega-art.js"></script>
+<script src="js/cortega.js"></script>
+<script src="js/player.js"></script>
+<script src="js/offline.js"></script>
+</body>
+</html>
