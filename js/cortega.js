@@ -106,7 +106,8 @@
     rowEls = Array.prototype.slice.call(pre.children);
   }
   function fit(){
-    var W = pre.parentNode.clientWidth || 800, fs = Math.min(14, W / (COLS * ratio));
+    var W = window.innerWidth || 800, H = window.innerHeight || 600;
+    var fs = Math.min(W / (COLS * ratio), H / (ROWS * 2 * ratio)) * 1.06;
     cw = fs * ratio; chh = cw * 2;
     pre.style.fontSize = fs + "px"; pre.style.lineHeight = chh + "px"; pre.style.width = (COLS * cw) + "px";
   }
@@ -115,17 +116,22 @@
 
   /* ---- pointer tracking ---- */
   var mx = 0, my = 0, lastMove = -1e9, wander = { x: 0, y: 0, next: 0 };
-  function onMove(e){ mx = e.clientX; my = e.clientY; lastMove = performance.now(); if(reduce) update(lastMove, true); }
-  window.addEventListener("pointermove", onMove, { passive: true });
-  window.addEventListener("pointerdown", onMove, { passive: true });
+  var holdMs = 4000;
+  function setPos(x, y, touch){ mx = x; my = y; holdMs = touch ? 20000 : 4000; lastMove = performance.now(); if(reduce) update(lastMove, true); }
+  function onPointer(e){ setPos(e.clientX, e.clientY, e.pointerType === "touch"); }
+  function onTouch(e){ var t = e.touches && e.touches[0]; if(t) setPos(t.clientX, t.clientY, true); }
+  window.addEventListener("pointermove", onPointer, { passive: true });
+  window.addEventListener("pointerdown", onPointer, { passive: true });
+  window.addEventListener("touchstart", onTouch, { passive: true });
+  window.addEventListener("touchmove", onTouch, { passive: true });
 
   function aim(e, now){
     var tx, ty;
-    if(now - lastMove < 4000){
+    if(now - lastMove < holdMs){
       var r = pre.getBoundingClientRect();
       var ex = r.left + (e.cx + 0.5) * cw, ey = r.top + (EY + 2) * chh;
       var vx = mx - ex, vy = my - ey, d = Math.sqrt(vx * vx + vy * vy) || 1;
-      var mag = Math.min(1, d / (r.width * 0.3));
+      var mag = Math.min(1, d / (Math.min(r.width, window.innerWidth) * 0.3));
       tx = vx / d * mag * 2.6; ty = vy / d * mag * 1.8;
     } else { tx = wander.x; ty = wander.y; }
     return { x: tx, y: ty };

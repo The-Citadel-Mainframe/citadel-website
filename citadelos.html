@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="css/citadelos.css">
 </head>
 <body data-page="citadelos">
+<div class="cortega-bg" aria-hidden="true"><pre class="ascii cortega" id="cortega-art"></pre></div>
 <a class="skip" href="#main">Skip to content</a>
 <div class="screen">
 <div class="statusbar"><span><span class="led"></span><b>CITADEL-OS v1.0</b> // CONTINUITY PROTOCOL</span><span>SYS.TIME <span id="clock">--:--</span> // LINK: SECURE</span></div>
@@ -38,14 +39,8 @@
 
 <h1 class="page">CitadelOS &amp; Cortega</h1>
 <p>Development log of CitadelOS, an operating system independent from Android, and of Cortega, its local AI assistant. Reports are listed in chronological order: the first at the top, the latest at the bottom. Each report states what is validated and what is not.</p>
+<noscript><p class="small dim">JavaScript is required to display the animated ASCII portrait of Cortega in the background.</p></noscript>
 
-<figure class="cortega-fig">
-  <div class="cortega-wrap" role="img" aria-label="ASCII art portrait of Cortega, the local AI assistant of CitadelOS. Her eyes follow the cursor.">
-    <pre class="ascii cortega" id="cortega-art" aria-hidden="true"></pre>
-  </div>
-  <noscript><p class="small dim">JavaScript is required to display the animated ASCII portrait of Cortega.</p></noscript>
-  <figcaption class="small dim">Cortega — ASCII rendering of the logo. The eyes follow the cursor.</figcaption>
-</figure>
 
 <h2>Timeline</h2>
 <p class="t-axis">Oldest report at the top</p>
@@ -144,7 +139,7 @@
     <details class="panel folder" id="r01-limits"><summary><span class="fname">Section // Declared limits</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li>Redmi 9T suspended: bootloader unlock failed. Galaxy S8 and Galaxy S20 evaluated as alternatives. No ARM hardware is currently available.</li>
+        <li>Operator hardware target suspended: bootloader unlock failed. Alternative devices are being evaluated. No ARM hardware is currently available.</li>
         <li>A single fleet key is shared by the whole fleet: no revocation for a single operator. Accepted choice.</li>
         <li>Quality of the answers of Qwen3-0.6B, tokens per second and thermal behaviour: not measured.</li>
         <li>Wi-Fi (8852BE), amdgpu, NVMe and Secure Boot on the LX15PRO: not verified.</li>
@@ -152,6 +147,118 @@
         <li>The perimeter filter is lexical: external topics that use only words present in the knowledge base can pass.</li>
         <li>The web UI certificate is self-signed: the browser shows a warning at first access.</li>
       </ul>
+    </div>
+    </details>
+  </section>
+
+  <section class="t-node" id="report-02" aria-labelledby="r02">
+    <span class="t-when">2026-11-22 // Report 02</span>
+    <h3 id="r02">Citadel Father on Debian 13</h3>
+    <p>Second report. Citadel Father now runs as a control station on Debian 13 stable, inside a QEMU virtual machine on the LX15PRO. It does not exist on real hardware yet. Indicative completion: about 50 percent (method at the end of this report).</p>
+
+    <details class="panel folder" id="r02-done" open><summary><span class="fname">Section // What was done</span></summary>
+    <div class="folder-body">
+      <h4>Base and virtual machine</h4>
+      <ul class="tick">
+        <li>Debian 13 installed in a QEMU VM (UEFI). Systemd services for Father, the local inference server and Cortega.</li>
+        <li>Father services from the previous reports: operator handshake, Ed25519 signed directives, anti-replay, 60 second expiry, audit without target text, web UI over HTTPS with access token.</li>
+        <li>citadel-devd (coldplug and hotplug of kernel modules): validated in QEMU, never on real hardware.</li>
+      </ul>
+      <h4>Citadel desktop</h4>
+      <ul class="tick">
+        <li>Theme taken from this website: centred emblem as wallpaper, VT323, Cyber Blast and Terminal Grotesque fonts. Themed login screen and themed GRUB.</li>
+        <li>XFCE session without panel. Desktop icons drawn in detailed ASCII: Trash, File manager, Resources, Terminal, AI Terminal, Network, Browser.</li>
+        <li>Italian keyboard layout script prepared.</li>
+      </ul>
+      <h4>Cortega in Father mode</h4>
+      <ul class="tick">
+        <li>Father-only profiles, visible only when Father mode is enabled and never chosen by automatic selection.</li>
+        <li>In Father mode the default scope is Father. Answers are grounded when the knowledge base supports the question, otherwise free, with a Father prompt. The gate on authorised networks, the policy and the fixed reply to authority claims stay in the code.</li>
+        <li>Local inference with llama.cpp, static binaries. A basic build runs on any x86_64 CPU but is very slow. A faster build needs AVX2, which the VM must expose.</li>
+        <li>The AI of Father still waits for human input and does not act autonomously.</li>
+      </ul>
+      <h4>Network and Tor</h4>
+      <ul class="tick">
+        <li><b>citadel-net</b> with three modes. Off blocks every outbound connection. Tor lets out only the Tor user. On is free, for updates. The system starts offline.</li>
+        <li><b>citadel-tor-check</b> verifies the Tor circuit. The AI Terminal learns online only if the check succeeds, otherwise it uses the local cache.</li>
+        <li><b>Browser.</b> Firefox ESR with a policy: SOCKS proxy locked to Tor, DNS through the proxy, WebRTC and geolocation off, fingerprinting resistance on. Google via Tor can show a CAPTCHA: no bypass is implemented.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r02-verified"><summary><span class="fname">Section // Verified working</span></summary>
+    <div class="folder-body">
+      <ul class="tick">
+        <li>Debian VM with Citadel desktop, login, icons and theme.</li>
+        <li>Cortega answers inside the VM in Father mode, with the inference server running.</li>
+        <li>Tor through the Tor-only firewall mode, circuit check, and web search by the AI, confirmed by the project lead.</li>
+        <li>Copy of files from the PC to the VM over SSH.</li>
+        <li>Go vet and tests pass on all Cortega packages.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r02-open"><summary><span class="fname">Section // To fix and not verified</span></summary>
+    <div class="folder-body">
+      <ul class="tick">
+        <li>Dialog "cannot quit the panel" at start: the cause is removed in the kit. Not verified in the VM.</li>
+        <li>Minor problems in the answers of the AI when it uses web search: reported, not yet described.</li>
+        <li>Intent router: one error on 35 test sentences, a request to create a script was read as an explanation of a command.</li>
+        <li>Italian keyboard layout in the VM: script ready, outcome not confirmed.</li>
+        <li>Absence of a flash of the original Debian interface at start: not verified.</li>
+        <li>Outcome of the browser with Google via Tor: not confirmed.</li>
+        <li>The device registry of citadel-devd is not exposed to the web UI or to Cortega.</li>
+        <li>Cleanup of the build kit and change of the VM password are pending.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r02-hardware"><summary><span class="fname">Section // Open items toward real hardware</span></summary>
+    <div class="folder-body">
+      <p>None of these has been started.</p>
+      <ul class="tick">
+        <li>Realtek 8852BE Wi-Fi support in the Debian stable kernel: not verified.</li>
+        <li>BitLocker state of the Windows disk: not verified.</li>
+        <li>BIOS version and interface of the internal disk: not verified.</li>
+        <li>Boot with Secure Boot enabled from the external disk, with the signed Debian shim and GRUB: not verified.</li>
+        <li>Real performance, in tokens per second, with 8 native threads: not measured.</li>
+        <li>Tor bootstrap can be tested only on the project PC, not in the cloud sandbox.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r02-next"><summary><span class="fname">Section // Next steps</span></summary>
+    <div class="folder-body">
+      <ol class="tick">
+        <li>Verify in the VM: panel error gone, Italian keyboard, correct inference binary, Browser icon and Google via Tor.</li>
+        <li>Describe and fix the problems of the web answers. Measure the larger quantisation profile on the test set and choose the profile.</li>
+        <li>Open decision: own inference engine in Go, as a feasibility test with a small model, or llama.cpp pinned for Father. The recommendation is llama.cpp pinned for Father.</li>
+        <li>Collect hardware data: BitLocker, BIOS, Wi-Fi support.</li>
+        <li>Boot test from the external disk with Secure Boot. Debian is installed on the external disk and Windows is not touched.</li>
+        <li>Connect a real Operator, or an Operator on a PC. Align the Father package of Cortega to Ed25519.</li>
+        <li>Cleanup of the kit, ISO checksum verification, final corrections.</li>
+      </ol>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r02-progress"><summary><span class="fname">Section // Indicative completion: about 50 percent</span></summary>
+    <div class="folder-body">
+      <p>Estimate with criteria and weights chosen by the project, not measured. "Complete OS" means Father installed on the external disk, bootable with Secure Boot, with the Citadel desktop, local AI and Tor, connected to real Operators.</p>
+      <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Area</th><th scope="col">Weight</th><th scope="col">Progress</th></tr></thead>
+        <tbody>
+          <tr><td>Debian, desktop and Citadel theme</td><td>15</td><td>90%</td></tr>
+          <tr><td>Father services (operator, web UI, devd, audit)</td><td>15</td><td>70%</td></tr>
+          <tr><td>Local AI (Cortega, inference server, Father mode)</td><td>20</td><td>70%</td></tr>
+          <tr><td>Tor network and browser</td><td>10</td><td>85%</td></tr>
+          <tr><td>Installation on real hardware (external disk, Secure Boot, Wi-Fi)</td><td>25</td><td>5%</td></tr>
+          <tr><td>Real Operator connected</td><td>10</td><td>25%</td></tr>
+          <tr><td>Hardening, documentation, release</td><td>5</td><td>20%</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>The software inside the VM is well advanced. Most of the remaining work is outside the VM: real hardware, a real Operator and final polish.</p>
     </div>
     </details>
   </section>
@@ -164,7 +271,7 @@
 
 </div>
 
-<div class="backbar"><a class="btn" href="index.html">Back to Terminal</a><a class="btn" href="home.html">Home</a></div>
+<div class="backbar"><a class="btn" href="index.html">Back to Terminal</a></div>
 </main>
 <div class="rule" aria-hidden="true">════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════</div>
 <footer>
