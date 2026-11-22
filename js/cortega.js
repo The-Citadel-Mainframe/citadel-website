@@ -97,7 +97,9 @@
   for(y = 0; y < ROWS; y++) draw(y);
 
   /* ---- sizing: fit the grid to the container, keep cells 1:2 ---- */
-  var cw = 4, chh = 8, ratio = 0.6;
+  /* The grid is laid out at a normal font size (NAT px) and shrunk with a CSS
+     scale, so mobile font boosting / minimum font size cannot enlarge it. */
+  var NAT = 12, cw = 4, chh = 8, ncw = 7, ratio = 0.6, scale = 1;
   function measure(){
     var t = document.createElement("span"); t.textContent = "MMMMMMMMMM";
     var keep = pre.innerHTML; pre.innerHTML = ""; pre.style.fontSize = "100px"; pre.style.lineHeight = "normal";
@@ -107,9 +109,16 @@
   }
   function fit(){
     var W = window.innerWidth || 800, H = window.innerHeight || 600;
-    var fs = Math.min(W / (COLS * ratio), H / (ROWS * 2 * ratio)) * 1.06;
-    cw = fs * ratio; chh = cw * 2;
-    pre.style.fontSize = fs + "px"; pre.style.lineHeight = chh + "px"; pre.style.width = (COLS * cw) + "px";
+    ncw = NAT * ratio;
+    var natW = COLS * ncw, natH = ROWS * ncw * 2;
+    scale = Math.min(W / natW, H / natH) * 1.04;
+    pre.style.webkitTextSizeAdjust = "none"; pre.style.textSizeAdjust = "none";
+    pre.style.fontSize = NAT + "px"; pre.style.lineHeight = (ncw * 2) + "px";
+    pre.style.width = natW + "px"; pre.style.height = natH + "px";
+    pre.style.position = "absolute"; pre.style.left = "50%"; pre.style.top = "50%";
+    pre.style.transformOrigin = "50% 50%";
+    pre.style.transform = "translate(-50%,-50%) scale(" + scale + ")";
+    cw = ncw * scale; chh = cw * 2;
   }
   measure(); fit();
   window.addEventListener("resize", fit);
@@ -179,7 +188,7 @@
   function glitch(){
     var n = 1 + Math.floor(Math.random() * 3), picked = [];
     for(var i = 0; i < n; i++){
-      var y = 12 + Math.floor(Math.random() * (ROWS - 30)), off = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.floor(Math.random() * 3)) * cw;
+      var y = 12 + Math.floor(Math.random() * (ROWS - 30)), off = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.floor(Math.random() * 3)) * ncw;
       rowEls[y].style.transform = "translateX(" + off + "px)"; picked.push(y);
     }
     setTimeout(function(){ picked.forEach(function(y){ rowEls[y].style.transform = ""; }); }, 90 + Math.random() * 90);

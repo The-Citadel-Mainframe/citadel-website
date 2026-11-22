@@ -1,7 +1,7 @@
 /* CitadelOS page: Cortega portrait + development timeline. Extends terminal.css. */
 
 /* Cortega ASCII portrait: full-page animated background */
-.cortega-bg{position:fixed;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;opacity:.3;user-select:none;-webkit-user-select:none}
+.cortega-bg{position:fixed;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;opacity:.42;user-select:none;-webkit-user-select:none}
 pre.cortega{margin:0;text-align:left;text-shadow:none;flex:none}
 pre.cortega .cr{white-space:pre}
 pre.cortega .cr::after{content:" "}
@@ -14,7 +14,7 @@ pre.cortega .c6{color:var(--hi);text-shadow:0 0 5px rgba(255,59,48,.9)}
 body[data-page="citadelos"] .screen{position:relative;z-index:1}
 body[data-page="citadelos"] .panel{background:linear-gradient(180deg,rgba(255,59,48,.06),rgba(5,0,0,.6))}
 body[data-page="citadelos"] .timeline .folder-body{background:rgba(5,0,0,.35)}
-@media (max-width:700px){.cortega-bg{opacity:.24}}
+@media (max-width:700px){.cortega-bg{opacity:.34}}
 @media (prefers-reduced-motion:no-preference){
   pre.cortega{animation:cflick 7s infinite steps(1)}
   @keyframes cflick{0%,91%,100%{opacity:1}92%{opacity:.86}93%{opacity:1}96%{opacity:.93}97%{opacity:1}}
