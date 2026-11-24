@@ -110,9 +110,10 @@
       "openappdev":["apps.html","App Development"], "openappdevelopment":["apps.html","App Development"], "openappdevelopments":["apps.html","App Development"], "appdev":["apps.html","App Development"], "openapps":["apps.html","App Development"],
       "opengamedev":["games.html","Game Development"], "opengamedevelopment":["games.html","Game Development"], "gamedev":["games.html","Game Development"], "opengames":["games.html","Game Development"],
       "opencitadelos":["citadelos.html","CitadelOS"], "citadelos":["citadelos.html","CitadelOS"], "opencortega":["citadelos.html","CitadelOS"], "cortega":["citadelos.html","CitadelOS"],
+      "opencommissions":["commissions.html","Commissions"], "commissions":["commissions.html","Commissions"], "commission":["commissions.html","Commissions"], "opencommission":["commissions.html","Commissions"], "hire":["commissions.html","Commissions"], "hirecitadel":["commissions.html","Commissions"],
       "seekcitadel":["contact.html","Contact"], "contact":["contact.html","Contact"], "opencontact":["contact.html","Contact"]
     };
-    var LABEL = { "home.html":"open Home", "apps.html":"open AppDev", "games.html":"open GameDev", "citadelos.html":"open CitadelOS", "contact.html":"seek Citadel" };
+    var LABEL = { "home.html":"open Home", "apps.html":"open AppDev", "games.html":"open GameDev", "citadelos.html":"open CitadelOS", "commissions.html":"open Commissions", "contact.html":"seek Citadel" };
     function say(text, cls){
       var p = document.createElement("p"); if(cls) p.className = cls; p.textContent = text; cout.appendChild(p);
       while(cout.children.length > 60) cout.removeChild(cout.firstChild);
@@ -181,6 +182,7 @@
         say("open AppDev — App Development");
         say("open GameDev — Game Development");
         say("open CitadelOS — CitadelOS and Cortega development timeline");
+        say("open Commissions — hire the Citadel technicians");
         say("seek Citadel — Contact");
         say("clear — clear the console");
         say("Tip: tap the buttons below the console to run a command.");
