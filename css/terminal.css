@@ -229,3 +229,10 @@ details.folder>summary:focus-visible{outline:1px solid var(--red);outline-offset
 details.folder[open]>summary{border-bottom:1px dashed var(--line)}
 .folder-body{padding:1.1rem 1.2rem 1.2rem}
 @media (max-width:520px){details.folder>summary{flex-wrap:wrap;gap:.4rem .8rem}}
+
+/* language switch (terminal page) */
+.langsw{display:flex;justify-content:flex-end;gap:.5rem;margin:0 0 .9rem}
+.lang{width:2.4rem;height:2.4rem;padding:0;border:1px solid var(--line);background:#000;cursor:pointer;line-height:0;opacity:.55}
+.lang img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85)}
+.lang:hover,.lang:focus-visible{opacity:1;border-color:var(--red)}
+.lang[aria-pressed="true"]{opacity:1;border-color:var(--red);box-shadow:0 0 0 1px #000,0 0 10px rgba(255,59,48,.55)}

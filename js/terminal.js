@@ -2,6 +2,7 @@
   "use strict";
   var C = window.CITADEL || {};
   var body = document.body;
+  var T = (window.CitadelI18n && window.CitadelI18n.t) || function(s){ for(var i=1;i<arguments.length;i++) s = s.split("{"+(i-1)+"}").join(arguments[i]); return s; };
 
   /* ---- security: anti-clickjacking + only https links / plain e-mails ---- */
   if(window.top !== window.self){
@@ -85,10 +86,10 @@
     btn.addEventListener("click", function(e){
       e.preventDefault();
       if(busy) return; busy = true;
-      var old = btn.textContent; btn.textContent = "[ LOADING... ]";
+      var old = btn.textContent; btn.textContent = T("[ LOADING... ]");
       load(function(ok){
         btn.textContent = old;
-        if(!ok || !window.EscapeSubsector086){ busy = false; btn.textContent = "[ UNAVAILABLE ]"; return; }
+        if(!ok || !window.EscapeSubsector086){ busy = false; btn.textContent = T("[ UNAVAILABLE ]"); return; }
         var ov = document.createElement("div"); ov.className = "es-overlay"; ov.id = "es-overlay";
         document.body.appendChild(ov); body.classList.add("es-open");
         btn.blur();
@@ -135,8 +136,8 @@
       return (bd<=2 && !tie && key.length>=4) ? {r:CMDS[best], exact:false} : null;
     }
     function go(r, fuzzy){
-      if(fuzzy) say("Did you mean: " + LABEL[r[0]] + " ?  Running it.", "err");
-      say("Opening " + r[1] + " ...", "ok"); setTimeout(function(){ location.href = r[0]; }, 450);
+      if(fuzzy) say(T("Did you mean: {0} ?  Running it.", LABEL[r[0]]), "err");
+      say(T("Opening {0} ...", T(r[1])), "ok"); setTimeout(function(){ location.href = r[0]; }, 450);
     }
 
     /* ---- hidden command: kill Time -> ESCAPE SUBSECTOR 086 (offline-capable, no redirect) ---- */
@@ -152,21 +153,21 @@
     }
     function launchGame(){
       if(launching) return; launching = true;
-      var msgs = [["[ SYSTEM MESSAGE ]","ok"],["INITIALIZING APPLICATION...",""],["LOADING SUBSECTOR 086...",""],
-        ["WARNING: CONTAINMENT FAILURE DETECTED.","err"],["APPLICATION READY.","ok"],["ESCAPE SUBSECTOR 086","ok"],["PRESS ENTER TO BEGIN",""]];
+      var msgs = [[T("[ SYSTEM MESSAGE ]"),"ok"],[T("INITIALIZING APPLICATION..."),""],[T("LOADING SUBSECTOR 086..."),""],
+        [T("WARNING: CONTAINMENT FAILURE DETECTED."),"err"],[T("APPLICATION READY."),"ok"],[T("ESCAPE SUBSECTOR 086"),"ok"],[T("PRESS ENTER TO BEGIN"),""]];
       var i = 0;
       (function next(){
         if(i < msgs.length){ say(msgs[i][0], msgs[i][1]); i++; setTimeout(next, reduceMotion ? 0 : 280); return; }
         setTimeout(function(){
           loadGame(function(ok){
-            if(!ok || !window.EscapeSubsector086){ say("ERROR: application module unavailable.", "err"); launching = false; return; }
+            if(!ok || !window.EscapeSubsector086){ say(T("ERROR: application module unavailable."), "err"); launching = false; return; }
             var ov = document.createElement("div"); ov.className = "es-overlay"; ov.id = "es-overlay";
             document.body.appendChild(ov); body.classList.add("es-open");
             cin.blur();
             window.EscapeSubsector086.mount(ov, { onExit: function(){
               if(ov.parentNode) ov.parentNode.removeChild(ov);
               body.classList.remove("es-open"); launching = false;
-              say("Session closed. Back at the terminal.", "ok"); cin.focus();
+              say(T("Session closed. Back at the terminal."), "ok"); cin.focus();
             }});
           });
         }, reduceMotion ? 0 : 450);
@@ -177,22 +178,22 @@
       say("visitor@citadel:~$ " + raw, "cmd");
       if(!c) return;
       if(c==="help" || c==="?" || c==="h"){
-        say("Available commands:");
-        say("open Home — the Citadel home");
-        say("open AppDev — App Development");
-        say("open GameDev — Game Development");
-        say("open CitadelOS — CitadelOS and Cortega development timeline");
-        say("open Commissions — hire the Citadel technicians");
-        say("seek Citadel — Contact");
-        say("clear — clear the console");
-        say("Tip: tap the buttons below the console to run a command.");
+        say(T("Available commands:"));
+        say(T("open Home — the Citadel home"));
+        say(T("open AppDev — App Development"));
+        say(T("open GameDev — Game Development"));
+        say(T("open CitadelOS — CitadelOS and Cortega development timeline"));
+        say(T("open Commissions — hire the Citadel technicians"));
+        say(T("seek Citadel — Contact"));
+        say(T("clear — clear the console"));
+        say(T("Tip: tap the buttons below the console to run a command."));
         return;
       }
       if(c==="clear" || c==="cls"){ cout.textContent = ""; return; }
       if(c==="kill time" || c==="killtime"){ launchGame(); return; }
       var f = find(c.replace(/ /g,""));
       if(f){ go(f.r, !f.exact); return; }
-      say("Command not recognized: " + raw.slice(0,40) + ". Type help, or tap a command below.", "err");
+      say(T("Command not recognized: {0}. Type help, or tap a command below.", raw.slice(0,40)), "err");
     }
     function submit(){ var v = cin.value; cin.value = ""; if(v.trim()){ hist.push(v); hi = hist.length; } run(v); }
     var gob = document.getElementById("con-go");
@@ -219,18 +220,18 @@
   try{ seen = sessionStorage.getItem("citadel-boot") === "1"; }catch(e){}
   if(body.getAttribute("data-page")==="terminal" && !seen && !reduce){
     var lines = [
-      "CITADEL-OS v1.0  //  CONTINUITY PROTOCOL",
+      T("CITADEL-OS v1.0  //  CONTINUITY PROTOCOL"),
       "",
-      "> INITIALIZING BASTION CORE ........... OK",
-      "> LOADING DIVISION REGISTRY ........... OK",
-      "> LINKING APP DEVELOPMENTS ............ OK",
-      "> LINKING GAME DEVELOPMENT ............ OK",
-      "> SECURE CHANNEL (HTTPS) .............. OK",
+      T("> INITIALIZING BASTION CORE ........... OK"),
+      T("> LOADING DIVISION REGISTRY ........... OK"),
+      T("> LINKING APP DEVELOPMENTS ............ OK"),
+      T("> LINKING GAME DEVELOPMENT ............ OK"),
+      T("> SECURE CHANNEL (HTTPS) .............. OK"),
       "",
-      "ACCESS GRANTED. WELCOME, VISITOR."
+      T("ACCESS GRANTED. WELCOME, VISITOR.")
     ];
     var boot = document.createElement("div"); boot.id="boot";
-    boot.innerHTML = '<pre></pre><div class="skiphint">[ click or press any key to skip ]</div>';
+    boot.innerHTML = '<pre></pre><div class="skiphint"></div>'; boot.querySelector(".skiphint").textContent = T("[ click or press any key to skip ]");
     body.appendChild(boot);
     var pre = boot.querySelector("pre"), i = 0, done = false;
     function finish(){

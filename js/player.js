@@ -5,6 +5,7 @@
     { title: "Rooftops of the Subsector 086", artist: "CDAI",           src: "audio/rooftops-subsector-086.mp3" },
     { title: "Mainframe Dojo",                artist: "Cephalon Hely",  src: "audio/mainframe-dojo.mp3" }
   ];
+  var T = (window.CitadelI18n && window.CitadelI18n.t) || function(s){ return s; };
   var KEY = "citadel-player", START_VOL = 0.5;
   var st = { i: 0, t: 0, paused: false, vol: START_VOL };
   try{ var s = JSON.parse(sessionStorage.getItem(KEY) || "null"); if(s && typeof s === "object"){
@@ -18,7 +19,7 @@
   var audio = new Audio(); audio.preload = "auto"; audio.volume = st.vol;
 
   /* ---- UI ---- */
-  var box = document.createElement("div"); box.id = "player"; box.setAttribute("role","region"); box.setAttribute("aria-label","Music player");
+  var box = document.createElement("div"); box.id = "player"; box.setAttribute("role","region"); box.setAttribute("aria-label",T("Music player"));
   box.innerHTML =
     '<div class="pl-in">' +
     '<span class="pl-ctl">' +
@@ -37,7 +38,7 @@
   function show(){
     var t = TRACKS[st.i]; tTitle.textContent = t.title; tArt.textContent = t.artist;
     var playing = !audio.paused;
-    bPlay.textContent = playing ? "||" : ">"; bPlay.setAttribute("aria-label", playing ? "Pause" : "Play");
+    bPlay.textContent = playing ? "||" : ">"; bPlay.setAttribute("aria-label", playing ? T("Pause") : T("Play"));
     box.classList.toggle("on", playing);
   }
   function load(i, t){
@@ -83,7 +84,14 @@
     release: function(){ if(ducked){ ducked = false; if(!st.paused) play(); } }
   };
 
+  function labels(){
+    box.setAttribute("aria-label", T("Music player"));
+    bPrev.setAttribute("aria-label", T("Previous track")); bNext.setAttribute("aria-label", T("Next track")); vol.setAttribute("aria-label", T("Volume"));
+  }
+  document.addEventListener("citadel-lang", function(){ labels(); show(); });
+
   /* ---- start ---- */
+  labels();
   load(st.i, st.t);
   if(!st.paused) play();
   show();

@@ -1,6 +1,8 @@
 /* ESCAPE SUBSECTOR 086 — The Citadel. Self-contained ASCII endless runner. */
 (function(){
 "use strict";
+var T=(window.CitadelI18n&&window.CitadelI18n.t)||function(s){return s;};
+var IT=!!(window.CitadelI18n&&window.CitadelI18n.lang==="it");
 var CFG={
   cols:64, rows:24, ground:18, px:16,
   baseSpeed:15, speedGain:1.8, speedTau:2600,
@@ -55,8 +57,8 @@ var SPARK={w:4,inset:0,haz:1,body:["\\/\\/","/\\/\\"],cap:"(**)",col:RED};
 var BGART=[
  {a:[".--.","|~~|","|~~|","'--'"],b:2},
  {a:[".--.","|~ |","| /|","'/-'"],b:2},
- {a:["+--------+","| DANGER! |","+--------+"],b:-1,y:7},
- {a:["+------+","| EXIT |","+------+"," ->->->"],b:-1,y:9},
+ {a:IT?["+----------+","| PERICOLO |","+----------+"]:["+--------+","| DANGER! |","+--------+"],b:-1,y:7},
+ {a:IT?["+--------+","| USCITA |","+--------+"," ->->->"]:["+------+","| EXIT |","+------+"," ->->->"],b:-1,y:9},
  {a:["[:::]","|___|"],b:2},
  {a:["/!\\","---"],b:-1,y:6},
  {a:["+-------------+","| SUBSECTOR 086 |","+-------------+"],b:-1,y:5}
@@ -70,11 +72,11 @@ function mount(host,opts){
   var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var wrap=el("div","es-wrap"), cv=el("canvas"), ctx=cv.getContext("2d");
-  cv.setAttribute("role","img"); cv.setAttribute("aria-label","ESCAPE SUBSECTOR 086 game area");
+  cv.setAttribute("role","img"); cv.setAttribute("aria-label",T("ESCAPE SUBSECTOR 086 game area"));
   var screenEl=el("div","es-screen"), parryBtn=el("button","btn es-parry");
-  parryBtn.type="button"; parryBtn.textContent="PARRY";
+  parryBtn.type="button"; parryBtn.textContent=T("PARRY");
   var help=el("p","es-help");
-  help.textContent=coarse?"TAP TOP: JUMP  //  TAP BOTTOM / SWIPE DOWN: SLIDE  //  PARRY BUTTON WHEN ENEMY NEARS":"SPACE/W/UP: JUMP  //  S/DOWN: SLIDE  //  F/SHIFT: PARRY  //  P: PAUSE  //  M: SOUND";
+  help.textContent=coarse?T("TAP TOP: JUMP  //  TAP BOTTOM / SWIPE DOWN: SLIDE  //  PARRY BUTTON WHEN ENEMY NEARS"):T("SPACE/W/UP: JUMP  //  S/DOWN: SLIDE  //  F/SHIFT: PARRY  //  P: PAUSE  //  M: SOUND");
   var credit=el("span","es-music"); credit.textContent="\u266A  "+MUSIC.title+"  //  "+MUSIC.artist;
   help.appendChild(credit);
   wrap.appendChild(cv); wrap.appendChild(screenEl); wrap.appendChild(parryBtn);
@@ -165,16 +167,16 @@ function mount(host,opts){
     var rec=setBest(); S="over"; G.rec=rec; musPause(true);
     showScreen([
       "========================================",
-      center("RUN TERMINATED",40),
+      center(T("RUN TERMINATED"),40),
       "========================================",
       "",
-      center("SUBSECTOR 086 LOST.",40),
+      center(T("SUBSECTOR 086 LOST."),40),
       "",
-      center("FINAL SCORE: "+pad(G.score,6),40),
-      center("PERSONAL BEST: "+pad(best,6)+(rec?"  *NEW*":""),40),
+      center(T("FINAL SCORE: ")+pad(G.score,6),40),
+      center(T("PERSONAL BEST: ")+pad(best,6)+(rec?T("  *NEW*"):""),40),
       "",
       "========================================"
-    ],[["RETRY",startGame],[embedded?"BACK TO TERMINAL":"EXIT TO TERMINAL",exit]]);
+    ],[[T("RETRY"),startGame],[embedded?T("BACK TO TERMINAL"):T("EXIT TO TERMINAL"),exit]]);
   }
   function exit(){
     musPause(true);
@@ -199,7 +201,7 @@ function mount(host,opts){
     var e=G.enemy, ok=false;
     if(e){ if(e.state==="ready"&&e.t>=e.prep-e.win) ok=true; else if(e.state==="strike"&&e.t<=CFG.post) ok=true; }
     if(ok){ startCine(); }
-    else { G.parryCd=e?CFG.parryLock:0.3; if(e) msg("MISTIMED",0.6,HI); }
+    else { G.parryCd=e?CFG.parryLock:0.3; if(e) msg(T("MISTIMED"),0.6,HI); }
   }
   function startCine(){
     var e=G.enemy; e.state="cine"; e.x=5;
@@ -208,7 +210,7 @@ function mount(host,opts){
   }
   function pause(){
     if(S!=="play") return; S="pause"; musPause(false);
-    showScreen([center("== PAUSED ==",40),"",center("SYSTEM HALTED",40)],[["RESUME",resume],[embedded?"BACK TO TERMINAL":"EXIT TO TERMINAL",exit]]);
+    showScreen([center(T("== PAUSED =="),40),"",center(T("SYSTEM HALTED"),40)],[[T("RESUME"),resume],[embedded?T("BACK TO TERMINAL"):T("EXIT TO TERMINAL"),exit]]);
   }
   function resume(){ if(S!=="pause") return; S="play"; hideScreen(); last=performance.now(); acc=0; musPlay(); }
 
@@ -217,7 +219,7 @@ function mount(host,opts){
     var k=e.key, tg=(e.target&&e.target.tagName||"").toLowerCase();
     if(tg==="input"||tg==="textarea"||tg==="select") return;
     var inter=(tg==="button"||tg==="a");
-    if(k==="m"||k==="M"){ sfxOn=!sfxOn; lsSet(CFG.sfx,sfxOn?"1":"0"); if(mus) mus.muted=!sfxOn; if(S==="play") msg(sfxOn?"SOUND ON":"SOUND OFF",0.8,GREY); return; }
+    if(k==="m"||k==="M"){ sfxOn=!sfxOn; lsSet(CFG.sfx,sfxOn?"1":"0"); if(mus) mus.muted=!sfxOn; if(S==="play") msg(sfxOn?T("SOUND ON"):T("SOUND OFF"),0.8,GREY); return; }
     if(S==="play"||S==="dead"){
       if(k===" "||k==="w"||k==="W"||k==="ArrowUp"){ if(!e.repeat) jump(); e.preventDefault(); }
       else if(k==="s"||k==="S"||k==="ArrowDown"){ if(!e.repeat) slide(); e.preventDefault(); }
@@ -275,14 +277,14 @@ function mount(host,opts){
       "========================================",
       center("ESCAPE SUBSECTOR 086",40),
       "========================================",
-      center("SUBSECTOR CONTAINMENT FAILURE",40),
+      center(T("SUBSECTOR CONTAINMENT FAILURE"),40),
       "",
-      center("HIGH SCORE: "+pad(best,6),40),
+      center(T("HIGH SCORE: ")+pad(best,6),40),
       "",
       "========================================",
-      center("THE CITADEL SYSTEM",40),
+      center(T("THE CITADEL SYSTEM"),40),
       "========================================"
-    ],[["START GAME",startGame],[embedded?"BACK TO TERMINAL":"EXIT TO TERMINAL",exit]]);
+    ],[[T("START GAME"),startGame],[embedded?T("BACK TO TERMINAL"):T("EXIT TO TERMINAL"),exit]]);
   }
 
   /* ---------- buffer helpers ---------- */
@@ -395,7 +397,7 @@ function mount(host,opts){
     if(G.shake>0) G.shake-=dt; if(G.flash>0) G.flash-=dt;
     /* encounter state machine */
     var en=G.enc, d=diff(G.score);
-    if(en.ph==="idle"&&G.score>=en.next-G.speed*4.2){ en.ph="warn"; msg("WARNING: HOSTILE SIGNATURE DETECTED",2.6,RED); sfx("alarm"); }
+    if(en.ph==="idle"&&G.score>=en.next-G.speed*4.2){ en.ph="warn"; msg(T("WARNING: HOSTILE SIGNATURE DETECTED"),2.6,RED); sfx("alarm"); }
     else if(en.ph==="warn"&&G.obs.length===0){ en.ph="active"; spawnEnemy(); }
     else if(en.ph==="cool"){ en.cool-=dt; if(en.cool<=0){ en.ph="idle"; G.lastEdge=COLS+G.speed*0.9; G.gap=0; } }
     /* obstacle generation */
@@ -450,7 +452,7 @@ function mount(host,opts){
     if(e.state==="ready"){ col=blink?RED:HI;
       var open=e.t>=e.prep-e.win;
       put(open?"[!!]":" !! ",Math.round(e.x)+1,FEET-3,open?(blink?RED:WHITE):RED);
-      if(open) put(">> PARRY <<",Math.floor((COLS-12)/2),6,blink?RED:WHITE);
+      if(open) put(T(">> PARRY <<"),Math.floor((COLS-T(">> PARRY <<").length)/2),6,blink?RED:WHITE);
     }
     if(e.state==="strike") col=RED;
     if(e.state==="cine") col=RED;
@@ -461,11 +463,11 @@ function mount(host,opts){
     if(S==="dead"&&G.dead){ var tt=G.dead.t; if(tt>0.15){ return; } col=RED; }
     if(G.cine){
       var t=G.cine.t;
-      if(t<0.3){ putSprite(["\\O/"," | ","/ \\"],PX,FEET,col); put("-X-",PX-4,FEET-1,Math.floor(t*20)%2?RED:WHITE); put(">>> PARRY! <<<",Math.floor((COLS-14)/2),6,RED); }
-      else if(t<0.62){ put(" O",PX,FEET-2,col); put("<==|\\",PX-3,FEET-1,col); put("/ \\",PX,FEET,col); put(">>> PARRY! <<<",Math.floor((COLS-14)/2),6,RED); }
+      if(t<0.3){ putSprite(["\\O/"," | ","/ \\"],PX,FEET,col); put("-X-",PX-4,FEET-1,Math.floor(t*20)%2?RED:WHITE); put(T(">>> PARRY! <<<"),Math.floor((COLS-T(">>> PARRY! <<<").length)/2),6,RED); }
+      else if(t<0.62){ put(" O",PX,FEET-2,col); put("<==|\\",PX-3,FEET-1,col); put("/ \\",PX,FEET,col); put(T(">>> PARRY! <<<"),Math.floor((COLS-T(">>> PARRY! <<<").length)/2),6,RED); }
       else { put(" O",PX,FEET-2,col); put("<==|\\",PX-3,FEET-1,col); put("/ \\",PX,FEET,col);
         if(t<0.8){ put("*",PX-4,FEET-1,WHITE); put("\\|/",PX-6,FEET-2,RED); put("-*-",PX-6,FEET-1,WHITE); put("/|\\",PX-6,FEET,RED); }
-        else put("TARGET DOWN",Math.floor((COLS-11)/2),6,WHITE); }
+        else put(T("TARGET DOWN"),Math.floor((COLS-T("TARGET DOWN").length)/2),6,WHITE); }
       return;
     }
     var a;
@@ -491,14 +493,14 @@ function mount(host,opts){
     put("+"+new Array(COLS-1).join("-")+"+",0,23,DIM,0,COLS-1);
     for(var r=1;r<=22;r++){ if(r===2||r===21) continue; put("|",0,r,DIM,0,COLS-1); put("|",COLS-1,r,DIM,0,COLS-1); }
     put(" CITADEL // SUBSECTOR 086",1,1,HI);
-    var right="SCORE: "+pad(G.score,8)+"  SPD: "+spd+" ";
+    var right=T("SCORE: ")+pad(G.score,8)+T("  SPD: ")+spd+" ";
     put(right,COLS-1-right.length,1,WHITE);
-    var st="SYSTEM STATUS: CRITICAL", sc=Math.floor(G.t*2)%2?RED:DIM;
-    if(G.enemy&&G.enemy.state!=="gone"){ st="!! HOSTILE CONTACT !!"; sc=RED; }
+    var st=T("SYSTEM STATUS: CRITICAL"), sc=Math.floor(G.t*2)%2?RED:DIM;
+    if(G.enemy&&G.enemy.state!=="gone"){ st=T("!! HOSTILE CONTACT !!"); sc=RED; }
     put(" "+st,1,22,sc);
-    var bs="BEST: "+pad(Math.max(best,G.score),8)+" "; put(bs,COLS-1-bs.length,22,GREY);
+    var bs=T("BEST: ")+pad(Math.max(best,G.score),8)+" "; put(bs,COLS-1-bs.length,22,GREY);
     if(G.msg&&!G.cine){ var t=G.msg.text; if(Math.floor(G.t*6)%2||G.msgT<0.4) put(t,Math.floor((COLS-t.length)/2),6,G.msg.col); }
-    if(S==="dead"&&G.dead&&G.dead.t>0.1){ var m=G.dead.cause==="enemy"?">>> CRITICAL DAMAGE <<<":">>> IMPACT <<<"; put(m,Math.floor((COLS-m.length)/2),8,RED); }
+    if(S==="dead"&&G.dead&&G.dead.t>0.1){ var m=G.dead.cause==="enemy"?T(">>> CRITICAL DAMAGE <<<"):T(">>> IMPACT <<<"); put(m,Math.floor((COLS-m.length)/2),8,RED); }
   }
   function render(){
     if(!G) return;
