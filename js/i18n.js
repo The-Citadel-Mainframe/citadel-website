@@ -505,7 +505,15 @@
 "Father in the VM: installer, onion operators and node-map interface": "Father nella VM: installatore, operator onion e interfaccia a mappa a nodi",
 "Third report. Citadel Father still runs only inside a virtual machine. It now has a single installer, a local certificate authority, one identity per operator, updates through Tor only and an interface built on a node map. Readiness is 70 percent, 52 of 74 items closed, measured with the method described at the end.": "Terzo rapporto. Citadel Father gira ancora solo dentro una macchina virtuale. Ora ha un installatore unico, un'autorità di certificazione locale, un'identità per ogni operator, aggiornamenti solo tramite Tor e un'interfaccia costruita su una mappa a nodi. La prontezza è del 70 percento, 52 voci chiuse su 74, misurata con il metodo descritto in fondo.",
 "2026-11-25 // Report 03": "2026-11-25 // Rapporto 03",
-"Toggle report": "Comprimi o espandi il rapporto"
+"Toggle report": "Comprimi o espandi il rapporto",
+"<span class=\"when\">25 Nov 2026</span> Seconda - Ultima Mano is released on Steam.": "<span class=\"when\">25 nov 2026</span> Seconda - Ultima Mano viene rilasciato su Steam.",
+"25 Nov 2026": "25 nov 2026",
+"25 November 2026": "25 novembre 2026",
+"Featured // OS": "In evidenza // OS",
+"CitadelOS &amp; Cortega": "CitadelOS e Cortega",
+"Development of Citadel Father and of the Cortega interface, documented in dated reports.": "Sviluppo di Citadel Father e dell'interfaccia Cortega, documentato in rapporti datati.",
+"Latest report: 2026-11-25 // Report 03 — Father in the VM: installer, onion operators and node-map interface": "Ultimo rapporto: 2026-11-25 // Rapporto 03 — Father nella VM: installer, operatori onion e interfaccia a mappa di nodi",
+"Latest report": "Ultimo rapporto"
 };
   var lang = "en";
 

@@ -15,7 +15,7 @@ window.CITADEL = {
     naoGithub:    "https://github.com/datzhely/NAO-Release",  // NAO is distributed via GitHub only
     dualPlay:     "",  // Google Play page of Dual Brothers App (future)
     dualInstagram:"https://www.instagram.com/db_tech_riparazioni",  // Dual Brothers Tech on Instagram
-    ultimaManoSteam: "",  // Steam page of the DLC "Seconda - Ultima Mano" (awaiting Steamworks review)
+    ultimaManoSteam: "https://store.steampowered.com/app/4632430/Seconda_Ultima_Mano/",  // Steam page of the DLC "Seconda - Ultima Mano" (released 25 Nov 2026)
     secondaSteam: "https://store.steampowered.com/app/4127470/Seconda/"   // Steam page of Seconda
   },
   privacy: {
