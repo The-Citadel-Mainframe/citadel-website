@@ -1,5 +1,5 @@
 /* Citadel service worker — offline support. Bump VERSION when files change. */
-var VERSION = "citadel-v7";
+var VERSION = "citadel-v8";
 var CORE = ["./","index.html","home.html","apps.html","games.html","contact.html","commissions.html","citadelos.html","404.html",
   "css/terminal.css","css/citadelos.css","js/cortega.js","js/timeline.js","js/cortega-art.js","js/i18n.js","js/config.js","js/terminal.js","js/player.js","js/offline.js",
   "games/escape-subsector-086/game.js","games/escape-subsector-086/style.css",

@@ -16,6 +16,7 @@ window.CITADEL = {
     dualPlay:     "",  // Google Play page of Dual Brothers App (future)
     dualInstagram:"https://www.instagram.com/db_tech_riparazioni",  // Dual Brothers Tech on Instagram
     ultimaManoSteam: "https://store.steampowered.com/app/4632430/Seconda_Ultima_Mano/",  // Steam page of the DLC "Seconda - Ultima Mano" (released 25 Nov 2026)
+    ultimaManoDownload: "steam://run/4632430",  // Opens Seconda - Ultima Mano in the Steam client (free for owners of Seconda)
     secondaSteam: "https://store.steampowered.com/app/4127470/Seconda/"   // Steam page of Seconda
   },
   privacy: {

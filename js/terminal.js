@@ -31,6 +31,7 @@
   document.querySelectorAll("[data-link]").forEach(function(el){
     var path = el.getAttribute("data-link").split("."), v = C;
     path.forEach(function(k){ v = v && v[k]; });
+    if(typeof v === "string" && /^steam:\/\/(run|install)\/\d+$/.test(v)){ el.href = v; return; }
     v = v && safeUrl(v);
     if(v){ el.href = v; el.target = "_blank"; el.rel = "noopener noreferrer"; }
     else pending(el, el.getAttribute("data-pending") || null);

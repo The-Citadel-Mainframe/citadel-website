@@ -513,7 +513,13 @@
 "CitadelOS &amp; Cortega": "CitadelOS e Cortega",
 "Development of Citadel Father and of the Cortega interface, documented in dated reports.": "Sviluppo di Citadel Father e dell'interfaccia Cortega, documentato in rapporti datati.",
 "Latest report: 2026-11-25 // Report 03 — Father in the VM: installer, onion operators and node-map interface": "Ultimo rapporto: 2026-11-25 // Rapporto 03 — Father nella VM: installer, operatori onion e interfaccia a mappa di nodi",
-"Latest report": "Ultimo rapporto"
+"Latest report": "Ultimo rapporto",
+"<span class=\"when\">25 Nov 2026</span> Seconda - Ultima Mano is released on Steam, free for all owners of Seconda.": "<span class=\"when\">25 nov 2026</span> Seconda - Ultima Mano viene rilasciato su Steam, gratis per tutti i possessori di Seconda.",
+"<b>Free for all owners of Seconda.</b> The DLC is available on Steam at no cost for everyone who owns the base game.": "<b>Gratis per tutti i possessori di Seconda.</b> Il DLC è disponibile su Steam senza costi per chiunque possieda il gioco base.",
+"Price": "Prezzo",
+"Free for owners of Seconda": "Gratis per i possessori di Seconda",
+"Download on Steam": "Scarica su Steam",
+"Download — unavailable": "Download — non disponibile"
 };
   var lang = "en";
 
