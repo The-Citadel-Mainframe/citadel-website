@@ -45,3 +45,14 @@ table.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
 .tbl .status{white-space:nowrap;font-size:.72rem}
 .status.part{border-style:dashed}
 @media (max-width:520px){.tbl td:first-child{white-space:normal}}
+
+/* collapsible reports: the red square is a button */
+.t-node.has-toggle::before{display:none}
+.t-toggle{position:absolute;left:-2.48rem;top:-.15rem;width:1.8rem;height:1.8rem;margin:0;padding:0;border:0;background:transparent;cursor:pointer;font:inherit;color:inherit;text-shadow:none}
+.t-toggle::before{content:"";position:absolute;left:.45rem;top:.45rem;width:.9rem;height:.9rem;background:var(--red);box-shadow:0 0 8px var(--red);transition:background .15s,box-shadow .15s}
+.t-toggle:hover::before{box-shadow:0 0 12px var(--red),0 0 2px #fff}
+.t-toggle:focus-visible{outline:1px dashed var(--red);outline-offset:1px}
+.t-toggle[aria-expanded="false"]::before{background:var(--bg);border:2px solid var(--red);box-shadow:0 0 6px var(--red)}
+.t-toggle[aria-expanded="false"]::after{content:"";position:absolute;left:.78rem;top:.78rem;width:.24rem;height:.24rem;background:var(--red)}
+.t-body[hidden]{display:none}
+.t-node.collapsed{margin-bottom:1.2rem}

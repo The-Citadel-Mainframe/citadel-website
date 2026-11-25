@@ -47,9 +47,11 @@
 
 <div class="timeline">
 
-  <section class="t-node" id="report-01" aria-labelledby="r01">
-    <span class="t-when">2026-11-22 // Report 01</span>
+  <section class="t-node has-toggle" id="report-01" aria-labelledby="r01">
+    <button type="button" class="t-toggle" aria-expanded="true" aria-controls="report-01-body" aria-label="Toggle report"></button>
+    <span class="t-when">2026-11-20 // Report 01</span>
     <h3 id="r01">Project intents and status</h3>
+    <div class="t-body" id="report-01-body">
     <p>First report. It defines CitadelOS and Cortega, lists the intents of the project, and states which components are validated and which are not. It is based on the project documents up to 2026-11-20.</p>
 
     <details class="panel folder" id="r01-citadelos" open><summary><span class="fname">Section // What is CitadelOS</span></summary>
@@ -114,7 +116,7 @@
     </div>
     </details>
 
-    <details class="panel folder" id="r01-status" open><summary><span class="fname">Section // Project status at 2026-11-22</span></summary>
+    <details class="panel folder" id="r01-status" open><summary><span class="fname">Section // Project status at 2026-11-20</span></summary>
     <div class="folder-body">
       <div class="tblwrap">
       <table class="tbl">
@@ -149,11 +151,14 @@
       </ul>
     </div>
     </details>
+    </div>
   </section>
 
-  <section class="t-node" id="report-02" aria-labelledby="r02">
+  <section class="t-node has-toggle" id="report-02" aria-labelledby="r02">
+    <button type="button" class="t-toggle" aria-expanded="true" aria-controls="report-02-body" aria-label="Toggle report"></button>
     <span class="t-when">2026-11-22 // Report 02</span>
     <h3 id="r02">Citadel Father on Debian 13</h3>
+    <div class="t-body" id="report-02-body">
     <p>Second report. Citadel Father now runs as a control station on Debian 13 stable, inside a QEMU virtual machine on the LX15PRO. It does not exist on real hardware yet. Indicative completion: about 50 percent (method at the end of this report).</p>
 
     <details class="panel folder" id="r02-done" open><summary><span class="fname">Section // What was done</span></summary>
@@ -261,12 +266,139 @@
       <p>The software inside the VM is well advanced. Most of the remaining work is outside the VM: real hardware, a real Operator and final polish.</p>
     </div>
     </details>
+    </div>
+  </section>
+
+  <section class="t-node has-toggle" id="report-03" aria-labelledby="r03">
+    <button type="button" class="t-toggle" aria-expanded="true" aria-controls="report-03-body" aria-label="Toggle report"></button>
+    <span class="t-when">2026-11-25 // Report 03</span>
+    <h3 id="r03">Father in the VM: installer, onion operators and node-map interface</h3>
+    <div class="t-body" id="report-03-body">
+    <p>Third report. Citadel Father still runs only inside a virtual machine. It now has a single installer, a local certificate authority, one identity per operator, updates through Tor only and an interface built on a node map. Readiness is 70 percent, 52 of 74 items closed, measured with the method described at the end.</p>
+
+    <details class="panel folder" id="r03-install" open><summary><span class="fname">Section // Installer, services and web UI</span></summary>
+    <div class="folder-body">
+      <h4>Installer</h4>
+      <ul class="tick">
+        <li><b>Single installer.</b> One installer sets up Father on Debian 13, in steps 0 to 11 with a check at every step. It ran with all steps OK inside the VM.</li>
+        <li><b>Kit.</b> Old versions, old binaries and the old operator knowledge base were moved out of the kit. Documents and installation guide are aligned. One start script remains for the VM: 8 CPUs, 6 GB of RAM, full HD.</li>
+        <li><b>Services.</b> The local inference service and the Cortega service are now enabled by the installer. The inference server had gone missing after an earlier install; the new installer restores it. Verified: health check OK and Cortega answers.</li>
+        <li><b>citadel-father as a service.</b> It exited immediately under systemd: its interactive console read an empty input and returned status 0, so no restart happened. A daemon flag now starts it without the console. Verified in the VM, with the web UI reachable.</li>
+        <li><b>VM restart.</b> A guest reset used to stop the emulator and leave a frozen screen. The start script now asks "restart the VM?" and reopens it. Verified.</li>
+      </ul>
+      <h4>Web UI</h4>
+      <ul class="tick">
+        <li><b>Local certificate authority.</b> Father generates its own Citadel CA and signs the web UI certificate with it. The CA is trusted in the browser of Father only. On other machines the browser warning remains, by choice. Verified.</li>
+        <li><b>Confirmation.</b> scan_lan and message sent from the web UI require typing CONFERMA. Authorising and revoking an operator require it too. Verified.</li>
+        <li><b>Sessions.</b> Web UI sessions last 1 hour and survive a restart of the service. Only hashes of session ids are stored on disk. Verified.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-network"><summary><span class="fname">Section // Network, Tor and operators</span></summary>
+    <div class="folder-body">
+      <h4>Tor and updates</h4>
+      <ul class="tick">
+        <li><b>apt through Tor.</b> Updates come only from the official Debian onion mirrors, through apt-transport-tor. They work in Tor-only mode, and resolving the clear-net mirror fails, as intended. Verified.</li>
+        <li><b>citadel-net.</b> A bug is fixed: without administrator rights the status command printed "on" instead of the real mode. Verified.</li>
+        <li><b>Onion service of Father.</b> It publishes only the operator port. The web UI is not published on Tor. An operator reached Father through the onion address. Verified.</li>
+      </ul>
+      <h4>Operators</h4>
+      <ul class="tick">
+        <li><b>One identity per operator.</b> Handshake v2: the operator signs the challenge of Father with its own Ed25519 key. Father checks the signature and that the key is in the authorised list, then answers with its own signature, which the operator verifies. Unauthorised operators are refused and audited by id only.</li>
+        <li><b>Revocation.</b> Removing an operator from the list closes its sessions at once and blocks reconnection. The shared fleet key is kept only for recognition on the LAN. Verified from Father Signals: authorisation with CONFERMA, connection through onion, verified ping, revocation, refused reconnection.</li>
+        <li><b>Authorisation requests.</b> An operator with a valid signature but an unknown key appears in a REQUESTS screen of Father Signals, up to 20 requests, kept for 24 hours. Father can authorise it with CONFERMA or ignore it.</li>
+      </ul>
+      <h4>Cortega as operator</h4>
+      <ul class="tick">
+        <li><b>Link to Father.</b> Cortega connects to Father at every start, with retries every 10 to 60 seconds. A received directive is shown to the user. /esegui N runs it only through the gates and always asks for CONFERMA. /rifiuta N discards it. The first connection appears in REQUESTS.</li>
+        <li><b>Signature of Father.</b> The Father package of Cortega now verifies the Ed25519 signature of Father. The old HMAC is gone.</li>
+        <li><b>Cortega operator test.</b> A test inside Father runs 7 steps with a temporary key. Result: 7 of 7 OK. Start 207 ms, refusal through onion 3843 ms, connection after authorisation 11072 ms, status to ack 443 ms, ping to ack 320 ms. The test leaves no trace: its key is never added to the authorised list.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-cortega"><summary><span class="fname">Section // Cortega</span></summary>
+    <div class="folder-body">
+      <ul class="tick">
+        <li><b>Router.</b> The intent router now passes 35 of 35 test sentences, up from 34 of 35. The request to create a script that shows date and time is now read correctly. The larger precision profile is the new default.</li>
+        <li><b>Generated tools.</b> Sum of 1 to 100: 20 seconds in total, one version, output 5050 correct. Prime numbers below 30: 38 seconds, one version, output correct. The isolation of /run is active in the VM.</li>
+        <li><b>Speed.</b> Start of the AI Terminal in 10 to 15 seconds. Prompt reading at 117 tokens per second. Generation speed was not read. The desktop stays fluid while Cortega generates.</li>
+        <li><b>Inference engine.</b> Decision: llama.cpp stays pinned for Father. No own engine in Go.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-ui"><summary><span class="fname">Section // Node-map interface</span></summary>
+    <div class="folder-body">
+      <p>Citadel OS Father now follows one interface idea: a node map in red and black ASCII. The overworld leads to the programs, and each program has its own map.</p>
+      <ul class="tick">
+        <li><b>Overworld.</b> Full-screen map: CITADEL leads to PROGRAMS (AI Terminal, Terminal, Files, Browser), FATHER SIGNALS, NETWORK (Off, Tor only, Free with CONFERMA, Tor status) and SYSTEM (Resources, Keyboard and screen, Animation, Restart and Shutdown with CONFERMA). A program opens maximised above the map, and closing it returns to the overworld. The transition dissolves the map into falling characters and recomposes it.</li>
+        <li><b>Workspaces.</b> SYSTEM, SPACES, SPACE 1 to 4, with the active one in green.</li>
+        <li><b>Emblem.</b> The CITADEL node, the wallpaper, the login screen and the boot splash use an ASCII version generated from the original Citadel logo. In the boot splash the emblem recomposes from falling characters. Verified.</li>
+        <li><b>Top bar.</b> A single ASCII line: program, windows, space, network, CPU, RAM, AI, date and time. Verified.</li>
+        <li><b>Father Signals.</b> Opens the web UI of Father already authenticated, without typing the token. Its home is an ASCII node map: OPERATOR NETWORK (connected, authorised, directives, requests), SETTINGS AND BENCHMARK, AUDIT. Operator windows offer STATUS, PING and MESSAGE buttons. Verified.</li>
+        <li><b>Benchmark.</b> Three tests, with 1 to 5 repetitions and a stored history. Operator test through onion: circuit 424 to 610 ms, handshake 408 to 512 ms, directive and ack 512 to 518 ms, total 1352 to 1535 ms. Tor and SOCKS: check of the Tor circuit in 803 to 943 ms, Tor confirmed. Debian onion mirror: OK. Measured in the VM.</li>
+        <li><b>Animation load.</b> The map now draws on a canvas with pre-rendered glyphs. In a test container the CPU use of the web engine fell from 82 percent to 15 percent. A setting offers full (10 frames per second), reduced (4, no rain) or off. Not yet measured in the VM.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-open"><summary><span class="fname">Section // Open items and not verified</span></summary>
+    <div class="folder-body">
+      <ul class="tick">
+        <li><b>Animation smoothness.</b> Slight stutters of the rain and the pulses in the VM. Cause not measured yet.</li>
+        <li><b>Overworld to Father Signals and back.</b> Not yet tried in the VM.</li>
+        <li><b>Operator consultation transport.</b> The way an operator consults Father is not defined yet.</li>
+        <li><b>Real operator.</b> No real operator has connected to Father yet. Only the simulator and the test Cortega have.</li>
+        <li><b>Cortega for Father, not done yet.</b> A gate that blocks should say which gate it is and how to change it. Graphical and interactive generated programs: today only text programs. A check on the structure of generated code before the test run: an earlier failure came from code that called main() without defining it. "Test OK" still means run without errors, not correct result. Semantic retrieval for the knowledge base. An app to choose the model by purpose. Support to reproduce attacks in an isolated laboratory, on own or authorised networks only.</li>
+        <li><b>Web answers.</b> Minor problems in the answers that use web search: reported, not yet described.</li>
+        <li><b>Interface.</b> Windows of the file manager and dialogs are opaque: transparency applies only to Citadel terminals and panels. The licence of one interface font is not verified.</li>
+        <li><b>Installer.</b> One run failed at the file transfer step because the connection was closed. The second run succeeded. Cause not determined. A first run of the Cortega operator test failed too, probably because the onion service had just been republished. Not verified.</li>
+        <li><b>Checksum.</b> The checksum of the Debian ISO was not compared with the official list.</li>
+      </ul>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-next"><summary><span class="fname">Section // Next steps</span></summary>
+    <div class="folder-body">
+      <ol class="tick">
+        <li>Measure the animation (frames per second, draw time, CPU in the VM), then reduce load if needed. Then try overworld, Father Signals and back in the VM.</li>
+        <li>Define the transport for the consultation of Father by an operator, and connect a real operator or an operator on a PC. Proposed tests: DNS leak, TCP reachability on the LAN, stability of the operator session, time to publish the onion service.</li>
+        <li>Cortega block for Father: the items listed in the open items, and the check on the structure of generated code.</li>
+        <li>Minor items: transparency of the file manager, font licence, ISO checksum.</li>
+        <li>At 90 percent readiness: start the installation on real storage. Until then only the VM.</li>
+      </ol>
+    </div>
+    </details>
+
+    <details class="panel folder" id="r03-readiness" open><summary><span class="fname">Section // Readiness: 70 percent (52 of 74)</span></summary>
+    <div class="folder-body">
+      <p>Constraint of the project: Father is not installed on any real storage until readiness reaches 90 percent. Until then work happens only in the VM.</p>
+      <p>Method: closed items divided by total items of the issue register for Father (installer, services, interface, network, Cortega, performance, security, kit and documents). An item is closed when it is done and verified, when its data is collected, or when its doubt is decided with no work left. Items that need an installation on storage are excluded. This method differs from the weighted estimate of Report 02, so the two figures are not comparable.</p>
+      <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Moment</th><th scope="col">Closed items</th><th scope="col">Readiness</th></tr></thead>
+        <tbody>
+          <tr><td>2026-11-24 21:30</td><td>22 of 71</td><td>31%</td></tr>
+          <tr><td>2026-11-24 22:17</td><td>36 of 71</td><td>51%</td></tr>
+          <tr><td>2026-11-25 00:09</td><td>46 of 73</td><td>63%</td></tr>
+          <tr><td>2026-11-25 01:29</td><td>49 of 73</td><td>67%</td></tr>
+          <tr><td>2026-11-25 12:29</td><td>51 of 73</td><td>70%</td></tr>
+          <tr><td>2026-11-25 14:00</td><td>52 of 74</td><td>70%</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>The threshold of 90 percent is 67 closed items. 15 are missing.</p>
+    </div>
+    </details>
+    </div>
   </section>
 
   <section class="t-node pending t-end" aria-labelledby="rnext">
     <span class="t-when">Next report // pending</span>
     <h3 id="rnext">New reports are added below</h3>
-    <p class="small">The next report will appear here, after Report 02.</p>
+    <p class="small">The next report will appear here, after Report 03.</p>
   </section>
 
 </div>
@@ -284,6 +416,7 @@
 <script src="js/terminal.js"></script>
 <script src="js/cortega-art.js"></script>
 <script src="js/cortega.js"></script>
+<script src="js/timeline.js"></script>
 <script src="js/player.js"></script>
 <script src="js/offline.js"></script>
 </body>
