@@ -38,7 +38,7 @@
 <main id="main">
 
 <h1 class="page">CitadelOS &amp; Cortega</h1>
-<p>Development log of CitadelOS, an operating system independent from Android, and of Cortega, its local AI assistant. Reports are listed in chronological order: the first at the top, the latest at the bottom. Each report states what is validated and what is not.</p>
+<p>Development log of CitadelOS, an operating system that does not depend on Android, and of Cortega, its AI assistant that runs on the device. Reports are in order: the oldest at the top, the latest at the bottom. Each report says what has been checked and what has not.</p>
 <noscript><p class="small dim">JavaScript is required to display the animated ASCII portrait of Cortega in the background.</p></noscript>
 
 
@@ -52,38 +52,38 @@
     <span class="t-when">2026-11-20 // Report 01</span>
     <h3 id="r01">Project intents and status</h3>
     <div class="t-body" id="report-01-body">
-    <p>First report. It defines CitadelOS and Cortega, lists the intents of the project, and states which components are validated and which are not. It is based on the project documents up to 2026-11-20.</p>
+    <p>First report. It explains what CitadelOS and Cortega are, what we want to build, and what already works and what does not. It is based on the project documents up to 2026-11-20.</p>
 
     <details class="panel folder" id="r01-citadelos" open><summary><span class="fname">Section // What is CitadelOS</span></summary>
     <div class="folder-body">
-      <p>CitadelOS is an operating system independent from Android. It is developed in Go, using only the standard library, and builds for linux/arm64 and linux/amd64.</p>
+      <p>CitadelOS is an operating system that does not depend on Android. It is written in Go and runs on both ARM and x86 processors.</p>
       <h4>Intents</h4>
       <ul class="tick">
-        <li><b>Independence from Android.</b> No Android framework. Own init (citadel-init, PID 1). Static Go userspace.</li>
-        <li><b>Anonymous network as the only path.</b> All Internet traffic goes through Tor. There is no alternative path.</li>
-        <li><b>Recognition between Citadel devices on the LAN only.</b> Two devices recognise each other as OPERATOR-N, where N is random and regenerated at every scan. No persistent identifier, no MAC address, no hostname is exposed.</li>
-        <li><b>Network Discovery (cnd).</b> Scans authorised networks. Non-Citadel devices stand out by difference. The gateway is labelled "mother".</li>
-        <li><b>Interface.</b> Aesthetics derived from this website. Command autocompletion for inexperienced users.</li>
-        <li><b>Zero cost.</b> No paid APIs, no telemetry.</li>
+        <li><b>No Android.</b> It has its own base and does not use any part of the Android system.</li>
+        <li><b>Internet only through Tor.</b> All Internet traffic goes through Tor, an anonymity network. There is no other route.</li>
+        <li><b>Citadel devices recognise each other on the local network.</b> Two devices see each other as OPERATOR-N, where N is a random number that changes at every scan. No fixed ID, no hardware address and no device name is shown.</li>
+        <li><b>Network scanner.</b> It scans only networks we authorise. Devices that are not Citadel stand out. The router is labelled "mother".</li>
+        <li><b>Interface.</b> The look comes from this website. Commands are autocompleted, to help people who are new to the terminal.</li>
+        <li><b>Zero cost.</b> No paid services and no tracking.</li>
       </ul>
     </div>
     </details>
 
     <details class="panel folder" id="r01-cortega" open><summary><span class="fname">Section // What is Cortega</span></summary>
     <div class="folder-body">
-      <p>Cortega is the local AI assistant of CitadelOS. It interprets requests in natural language and translates them into system commands. It operates only within the Citadel perimeter.</p>
+      <p>Cortega is the AI assistant of CitadelOS and runs on the device itself. You write in plain language and it turns your request into a system command. It only works inside the Citadel world.</p>
       <h4>Intents</h4>
       <ul class="tick">
-        <li><b>Model.</b> Qwen3-0.6B (Apache-2.0), run locally with llama.cpp on the loopback interface. No upload, no telemetry.</li>
-        <li><b>Precision profiles</b>, chosen by the operator: ECO (Q4_0), STANDARD (Q8_0), PRECISION (f16 or BF16).</li>
-        <li><b>Constrained output.</b> The model emits only an intent in JSON, {action, target, detail}, taken from a closed list of actions and enforced by a GBNF grammar. Risk and confirmation are decided by the code, not by the model.</li>
-        <li><b>Mandatory confirmation.</b> Every executable action requires confirmation from the operator. port_scan and discover_hosts require the word CONFERMA.</li>
-        <li><b>Perimeter.</b> For Cortega the world is Citadel. She answers about Citadel, CitadelOS and herself. Friendly conversation is allowed. Topics outside the perimeter are refused by the code, without querying the model.</li>
-        <li><b>Grounded answers.</b> Local knowledge base with BM25 search. Answers include their sources.</li>
-        <li><b>Learning as a spectator.</b> She reads this website and the public YouTube channel, without login, only through Tor, only from allowlisted hosts. Learned content is treated as untrusted data and cannot issue actions.</li>
-        <li><b>Networks.</b> Only IP addresses inside authorised networks. No hostnames.</li>
-        <li><b>Generated tools.</b> Saved and analysed statically, never run automatically. Execution only with /run, confirmation and a timeout.</li>
-        <li><b>Audit.</b> Date, outcome and type of action. Never the text of the target.</li>
+        <li><b>Small local model.</b> It runs on the device and sends nothing out. No uploads and no tracking.</li>
+        <li><b>Three precision levels</b>, chosen by the operator: ECO (fastest, least precise), STANDARD, and PRECISION (slowest, most precise).</li>
+        <li><b>Limited output.</b> The AI can only pick an action from a fixed list. The program decides how risky an action is, not the AI.</li>
+        <li><b>Always asks first.</b> Every action needs the confirmation of the operator. Scanning actions need the operator to type the word CONFERMA.</li>
+        <li><b>Stays on topic.</b> Cortega talks about Citadel, CitadelOS and herself. Friendly chat is fine. Anything else is refused by the program, without even asking the AI.</li>
+        <li><b>Answers with sources.</b> She looks things up in a local knowledge base and shows where each answer comes from.</li>
+        <li><b>Learning by reading.</b> She reads this website and the public YouTube channel, only through Tor and only from approved sites. What she reads is treated as plain information and can never give her orders.</li>
+        <li><b>Authorised networks only.</b> She works only with addresses inside networks we authorised.</li>
+        <li><b>Tools she writes.</b> They are saved and checked, but never run on their own. They run only if the operator asks and confirms, and a time limit applies.</li>
+        <li><b>Activity log.</b> It records the date, the outcome and the type of each action, never the text of the target.</li>
       </ul>
     </div>
     </details>
@@ -91,27 +91,27 @@
     <details class="panel folder" id="r01-principles"><summary><span class="fname">Section // Principles</span></summary>
     <div class="folder-body">
       <dl class="kv">
-        <dt>Anonymity</dt><dd>All traffic through Tor. No persistent device identifier. No telemetry.</dd>
-        <dt>Human control</dt><dd>Every executable action is confirmed by the operator. Risk is decided by code. The AI of Father waits for human input and does not act autonomously.</dd>
-        <dt>Perimeter</dt><dd>Cortega works only inside Citadel. Only authorised networks and allowlisted hosts. Learned content cannot issue actions.</dd>
-        <dt>Zero cost</dt><dd>No paid APIs. Local execution of the model.</dd>
+        <dt>Anonymity</dt><dd>All traffic goes through Tor. No fixed device ID. No tracking.</dd>
+        <dt>Human control</dt><dd>Every action is confirmed by a person. The program judges the risk. The AI of Father waits for a human and never acts on its own.</dd>
+        <dt>Perimeter</dt><dd>Cortega works only inside Citadel, on authorised networks and approved sites. What she reads cannot give orders.</dd>
+        <dt>Zero cost</dt><dd>No paid services. The model runs locally.</dd>
       </dl>
     </div>
     </details>
 
     <details class="panel folder" id="r01-editions"><summary><span class="fname">Section // Editions: Operator and Father</span></summary>
     <div class="folder-body">
-      <p>CitadelOS has two editions: <b>Operator</b>, a field device, and <b>Father</b>, a control station. The current priority is Father. Operator is in backup and its resumption is postponed.</p>
+      <p>CitadelOS comes in two editions: <b>Operator</b>, a device used in the field, and <b>Father</b>, a control station. Right now the focus is Father. Operator is set aside and will resume later.</p>
       <h4>Citadel Father</h4>
       <ul class="tick">
-        <li><b>Role.</b> Control station to which operators connect. Target hardware: laptop LX15PRO (Ryzen 7 5700U, 16 GB).</li>
-        <li><b>Operator link.</b> Direct LAN and Tor onion service. TCP handshake with an HMAC-SHA256 proof.</li>
-        <li><b>Signed directives.</b> Ed25519 signatures. Allowed actions: ping, status, scan_lan, message. Expiry after 60 seconds, anti-replay. The operator verifies with the public key only.</li>
-        <li><b>Local interface.</b> Web UI served by Father: HTTPS, access token, HttpOnly and Secure cookie, limit on login attempts. A dedicated graphical shell is planned.</li>
-        <li><b>Base.</b> Debian 13 stable. Go services run as systemd units: citadel-father, citadel-llama, citadel-cortega.</li>
-        <li><b>Device management (citadel-devd).</b> Coldplug and hotplug, automatic loading of kernel modules, device registry.</li>
-        <li><b>OS–AI symbiosis.</b> Project goal: desktop and drivers that adapt to what is connected.</li>
-        <li><b>Human input.</b> The AI of Father always waits for human input and does not act autonomously.</li>
+        <li><b>Role.</b> The control station that operators connect to. Target machine: the laptop LX15PRO.</li>
+        <li><b>Connection with operators.</b> Through the local network or through Tor. Every connection starts with a secret check.</li>
+        <li><b>Signed orders.</b> Father sends orders with a digital signature. Allowed orders: ping, status, network scan, message. An order expires after 60 seconds and cannot be replayed. The operator only needs the public key to check it.</li>
+        <li><b>Local interface.</b> A web page served by Father, protected with HTTPS, an access token and a limit on login attempts. A dedicated graphical interface is planned.</li>
+        <li><b>Base.</b> Debian 13, with the Citadel services running on top of it.</li>
+        <li><b>Device management.</b> Father detects devices when they are plugged in and loads the right drivers by itself.</li>
+        <li><b>OS and AI together.</b> The goal is a desktop and drivers that adapt to what is connected.</li>
+        <li><b>Human first.</b> The AI of Father waits for human input and does not act on its own.</li>
       </ul>
     </div>
     </details>
@@ -122,14 +122,14 @@
       <table class="tbl">
         <thead><tr><th scope="col">Component</th><th scope="col">State</th><th scope="col">Detail</th></tr></thead>
         <tbody>
-          <tr><td>citadel-init (PID 1)</td><td><span class="status">Validated</span></td><td>In QEMU: boot, switch_root, service supervision.</td></tr>
-          <tr><td>cnd, Operator protocol</td><td><span class="status">Validated</span></td><td>On two network namespaces with veth.</td></tr>
-          <tr><td>Supervised Tor service</td><td><span class="status part">Partial</span></td><td>SOCKS active, automatic restart validated. Full bootstrap not validated.</td></tr>
-          <tr><td>citadel-father, signed directives</td><td><span class="status">Validated</span></td><td>With tests, plus an end-to-end test on loopback.</td></tr>
-          <tr><td>Father web UI</td><td><span class="status">Validated</span></td><td>On Windows (LX15PRO), loopback.</td></tr>
-          <tr><td>citadel-devd</td><td><span class="status">Validated</span></td><td>In QEMU x86_64.</td></tr>
-          <tr><td>UEFI boot (UKI)</td><td><span class="status">Validated</span></td><td>In QEMU with OVMF.</td></tr>
-          <tr><td>Cortega: policy, perimeter, knowledge base, grammar</td><td><span class="status part">Unit tests</span></td><td>Unit tests pass.</td></tr>
+          <tr><td>System start-up and services</td><td><span class="status">Validated</span></td><td>Tested in a virtual machine: it starts, hands over to the system and keeps services running.</td></tr>
+          <tr><td>Network scanner and operator protocol</td><td><span class="status">Validated</span></td><td>Tested on two simulated networks.</td></tr>
+          <tr><td>Tor service</td><td><span class="status part">Partial</span></td><td>Connection works and restarts by itself. The full start-up is not validated.</td></tr>
+          <tr><td>Father and signed orders</td><td><span class="status">Validated</span></td><td>Tests pass, plus a full test on a single machine.</td></tr>
+          <tr><td>Father web interface</td><td><span class="status">Validated</span></td><td>Tested on a Windows PC, locally.</td></tr>
+          <tr><td>Device management</td><td><span class="status">Validated</span></td><td>Tested in the virtual machine.</td></tr>
+          <tr><td>Secure start-up (UEFI)</td><td><span class="status">Validated</span></td><td>Tested in the virtual machine.</td></tr>
+          <tr><td>Cortega rules and knowledge base</td><td><span class="status part">Unit tests</span></td><td>Automatic tests pass.</td></tr>
           <tr><td>Cortega with a real model</td><td><span class="status tbc">Not validated</span></td><td>—</td></tr>
           <tr><td>Real hardware</td><td><span class="status tbc">Not validated</span></td><td>—</td></tr>
         </tbody>
@@ -141,13 +141,13 @@
     <details class="panel folder" id="r01-limits"><summary><span class="fname">Section // Declared limits</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li>Operator hardware target suspended: bootloader unlock failed. Alternative devices are being evaluated. No ARM hardware is currently available.</li>
-        <li>A single fleet key is shared by the whole fleet: no revocation for a single operator. Accepted choice.</li>
-        <li>Quality of the answers of Qwen3-0.6B, tokens per second and thermal behaviour: not measured.</li>
-        <li>Wi-Fi (8852BE), amdgpu, NVMe and Secure Boot on the LX15PRO: not verified.</li>
-        <li>/run has no operating-system-level isolation. The static analysis is heuristic.</li>
-        <li>The perimeter filter is lexical: external topics that use only words present in the knowledge base can pass.</li>
-        <li>The web UI certificate is self-signed: the browser shows a warning at first access.</li>
+        <li>The hardware target for Operator is on hold: the bootloader of the chosen device could not be unlocked. Other devices are being evaluated. No ARM hardware is available at the moment.</li>
+        <li>One shared key is used by the whole fleet, so a single operator cannot be revoked. This was an accepted choice.</li>
+        <li>Quality of the answers of the small model, its speed and its heat: not measured.</li>
+        <li>Wi-Fi, graphics, disk and Secure Boot on the LX15PRO: not verified.</li>
+        <li>Tools written by Cortega are not isolated at system level, and their check is only approximate.</li>
+        <li>The topic filter works on words: an off-topic question that uses only words known to Cortega can get through.</li>
+        <li>The web interface uses a self-made certificate, so the browser shows a warning the first time.</li>
       </ul>
     </div>
     </details>
@@ -159,34 +159,34 @@
     <span class="t-when">2026-11-22 // Report 02</span>
     <h3 id="r02">Citadel Father on Debian 13</h3>
     <div class="t-body" id="report-02-body">
-    <p>Second report. Citadel Father now runs as a control station on Debian 13 stable, inside a QEMU virtual machine on the LX15PRO. It does not exist on real hardware yet. Indicative completion: about 50 percent (method at the end of this report).</p>
+    <p>Second report. Citadel Father now works as a control station on Debian 13, inside a virtual machine on the LX15PRO. It does not exist on real hardware yet. Estimated completion: about 50 percent (the method is at the end of this report).</p>
 
     <details class="panel folder" id="r02-done" open><summary><span class="fname">Section // What was done</span></summary>
     <div class="folder-body">
       <h4>Base and virtual machine</h4>
       <ul class="tick">
-        <li>Debian 13 installed in a QEMU VM (UEFI). Systemd services for Father, the local inference server and Cortega.</li>
-        <li>Father services from the previous reports: operator handshake, Ed25519 signed directives, anti-replay, 60 second expiry, audit without target text, web UI over HTTPS with access token.</li>
-        <li>citadel-devd (coldplug and hotplug of kernel modules): validated in QEMU, never on real hardware.</li>
+        <li>Debian 13 is installed in a virtual machine. The services for Father, for the local AI engine and for Cortega start by themselves.</li>
+        <li>Father keeps what earlier reports described: operator connection, signed orders, expiry after 60 seconds, an activity log without target text, and the web interface with an access token.</li>
+        <li>Device management works in the virtual machine. It has never run on real hardware.</li>
       </ul>
       <h4>Citadel desktop</h4>
       <ul class="tick">
-        <li>Theme taken from this website: centred emblem as wallpaper, VT323, Cyber Blast and Terminal Grotesque fonts. Themed login screen and themed GRUB.</li>
-        <li>XFCE session without panel. Desktop icons drawn in detailed ASCII: Trash, File manager, Resources, Terminal, AI Terminal, Network, Browser.</li>
-        <li>Italian keyboard layout script prepared.</li>
+        <li>The look comes from this website: the emblem as wallpaper and the site fonts, plus a themed login screen and boot menu.</li>
+        <li>The desktop has no panel. Icons are drawn in detailed ASCII: Trash, Files, Resources, Terminal, AI Terminal, Network, Browser.</li>
+        <li>A script for the Italian keyboard is ready.</li>
       </ul>
       <h4>Cortega in Father mode</h4>
       <ul class="tick">
-        <li>Father-only profiles, visible only when Father mode is enabled and never chosen by automatic selection.</li>
-        <li>In Father mode the default scope is Father. Answers are grounded when the knowledge base supports the question, otherwise free, with a Father prompt. The gate on authorised networks, the policy and the fixed reply to authority claims stay in the code.</li>
-        <li>Local inference with llama.cpp, static binaries. A basic build runs on any x86_64 CPU but is very slow. A faster build needs AVX2, which the VM must expose.</li>
-        <li>The AI of Father still waits for human input and does not act autonomously.</li>
+        <li>Father-only profiles, visible only when Father mode is on and never picked automatically.</li>
+        <li>In Father mode, Cortega talks about Father by default. She uses the knowledge base when it has the answer, and answers freely otherwise. The checks on authorised networks and the fixed reply to anyone claiming authority stay in the program.</li>
+        <li>The AI runs locally. A basic version works on any PC but is slow. A faster version needs a processor feature (AVX2) that the virtual machine must offer.</li>
+        <li>The AI of Father still waits for human input and does not act on its own.</li>
       </ul>
       <h4>Network and Tor</h4>
       <ul class="tick">
-        <li><b>citadel-net</b> with three modes. Off blocks every outbound connection. Tor lets out only the Tor user. On is free, for updates. The system starts offline.</li>
-        <li><b>citadel-tor-check</b> verifies the Tor circuit. The AI Terminal learns online only if the check succeeds, otherwise it uses the local cache.</li>
-        <li><b>Browser.</b> Firefox ESR with a policy: SOCKS proxy locked to Tor, DNS through the proxy, WebRTC and geolocation off, fingerprinting resistance on. Google via Tor can show a CAPTCHA: no bypass is implemented.</li>
+        <li><b>Network switch.</b> Three modes. Off blocks every outgoing connection. Tor lets out only Tor. On is open, used for updates. The system starts offline.</li>
+        <li><b>Tor check.</b> A check verifies that Tor works. The AI Terminal goes online to learn only if the check passes, otherwise it uses saved data.</li>
+        <li><b>Browser.</b> Firefox set to go only through Tor, with DNS through Tor, and with WebRTC and location turned off. Google through Tor can show a CAPTCHA, and we do not try to bypass it.</li>
       </ul>
     </div>
     </details>
@@ -194,11 +194,11 @@
     <details class="panel folder" id="r02-verified"><summary><span class="fname">Section // Verified working</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li>Debian VM with Citadel desktop, login, icons and theme.</li>
-        <li>Cortega answers inside the VM in Father mode, with the inference server running.</li>
-        <li>Tor through the Tor-only firewall mode, circuit check, and web search by the AI, confirmed by the project lead.</li>
-        <li>Copy of files from the PC to the VM over SSH.</li>
-        <li>Go vet and tests pass on all Cortega packages.</li>
+        <li>The Debian virtual machine with the Citadel desktop, login, icons and theme.</li>
+        <li>Cortega answers inside the virtual machine in Father mode.</li>
+        <li>Tor in Tor-only mode, the Tor check and web search by the AI, confirmed by the project lead.</li>
+        <li>Files copied from the PC to the virtual machine.</li>
+        <li>Automatic tests pass on all parts of Cortega.</li>
       </ul>
     </div>
     </details>
@@ -206,14 +206,14 @@
     <details class="panel folder" id="r02-open"><summary><span class="fname">Section // To fix and not verified</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li>Dialog "cannot quit the panel" at start: the cause is removed in the kit. Not verified in the VM.</li>
-        <li>Minor problems in the answers of the AI when it uses web search: reported, not yet described.</li>
-        <li>Intent router: one error on 35 test sentences, a request to create a script was read as an explanation of a command.</li>
-        <li>Italian keyboard layout in the VM: script ready, outcome not confirmed.</li>
-        <li>Absence of a flash of the original Debian interface at start: not verified.</li>
-        <li>Outcome of the browser with Google via Tor: not confirmed.</li>
-        <li>The device registry of citadel-devd is not exposed to the web UI or to Cortega.</li>
-        <li>Cleanup of the build kit and change of the VM password are pending.</li>
+        <li>A "cannot quit the panel" message at start: the cause is removed, but not verified in the virtual machine.</li>
+        <li>Small problems in the answers of the AI when it searches the web: noted, not yet described.</li>
+        <li>Understanding requests: one mistake out of 35 test sentences. A request to create a script was read as a request to explain a command.</li>
+        <li>Italian keyboard in the virtual machine: script ready, result not confirmed.</li>
+        <li>No flash of the original Debian screen at start: not verified.</li>
+        <li>Browser with Google through Tor: result not confirmed.</li>
+        <li>The list of detected devices is not yet shown in the web interface or to Cortega.</li>
+        <li>Cleaning up the build files and changing the virtual machine password are still to do.</li>
       </ul>
     </div>
     </details>
@@ -222,12 +222,12 @@
     <div class="folder-body">
       <p>None of these has been started.</p>
       <ul class="tick">
-        <li>Realtek 8852BE Wi-Fi support in the Debian stable kernel: not verified.</li>
-        <li>BitLocker state of the Windows disk: not verified.</li>
-        <li>BIOS version and interface of the internal disk: not verified.</li>
-        <li>Boot with Secure Boot enabled from the external disk, with the signed Debian shim and GRUB: not verified.</li>
-        <li>Real performance, in tokens per second, with 8 native threads: not measured.</li>
-        <li>Tor bootstrap can be tested only on the project PC, not in the cloud sandbox.</li>
+        <li>Wi-Fi card support in the Debian kernel: not verified.</li>
+        <li>Disk encryption state of the Windows disk: not verified.</li>
+        <li>BIOS version and type of the internal disk: not verified.</li>
+        <li>Start-up with Secure Boot from the external disk: not verified.</li>
+        <li>Real speed of the AI on the real processor: not measured.</li>
+        <li>The Tor start-up can only be tested on the project PC, not in the cloud.</li>
       </ul>
     </div>
     </details>
@@ -235,35 +235,35 @@
     <details class="panel folder" id="r02-next"><summary><span class="fname">Section // Next steps</span></summary>
     <div class="folder-body">
       <ol class="tick">
-        <li>Verify in the VM: panel error gone, Italian keyboard, correct inference binary, Browser icon and Google via Tor.</li>
-        <li>Describe and fix the problems of the web answers. Measure the larger quantisation profile on the test set and choose the profile.</li>
-        <li>Open decision: own inference engine in Go, as a feasibility test with a small model, or llama.cpp pinned for Father. The recommendation is llama.cpp pinned for Father.</li>
-        <li>Collect hardware data: BitLocker, BIOS, Wi-Fi support.</li>
-        <li>Boot test from the external disk with Secure Boot. Debian is installed on the external disk and Windows is not touched.</li>
-        <li>Connect a real Operator, or an Operator on a PC. Align the Father package of Cortega to Ed25519.</li>
-        <li>Cleanup of the kit, ISO checksum verification, final corrections.</li>
+        <li>Check in the virtual machine: panel error gone, Italian keyboard, right AI engine, Browser icon and Google through Tor.</li>
+        <li>Describe and fix the problems of the web answers. Measure the more precise AI profile on the test set and choose one.</li>
+        <li>Open decision: build our own AI engine in Go (as a test with a small model), or keep the existing open-source engine (llama.cpp) for Father. The recommendation is to keep llama.cpp for Father.</li>
+        <li>Collect hardware data: disk encryption, BIOS, Wi-Fi.</li>
+        <li>Boot test from the external disk with Secure Boot. Debian goes on the external disk and Windows is not touched.</li>
+        <li>Connect a real Operator, or an Operator on a PC. Update the Father package of Cortega to the new signatures.</li>
+        <li>Clean up the files, check the ISO checksum and make final fixes.</li>
       </ol>
     </div>
     </details>
 
     <details class="panel folder" id="r02-progress"><summary><span class="fname">Section // Indicative completion: about 50 percent</span></summary>
     <div class="folder-body">
-      <p>Estimate with criteria and weights chosen by the project, not measured. "Complete OS" means Father installed on the external disk, bootable with Secure Boot, with the Citadel desktop, local AI and Tor, connected to real Operators.</p>
+      <p>This is an estimate, with criteria and weights chosen by us. It is not a measurement. "Complete OS" means Father installed on the external disk, able to start with Secure Boot, with the Citadel desktop, local AI and Tor, and connected to real Operators.</p>
       <div class="tblwrap">
       <table class="tbl">
         <thead><tr><th scope="col">Area</th><th scope="col">Weight</th><th scope="col">Progress</th></tr></thead>
         <tbody>
-          <tr><td>Debian, desktop and Citadel theme</td><td>15</td><td>90%</td></tr>
-          <tr><td>Father services (operator, web UI, devd, audit)</td><td>15</td><td>70%</td></tr>
-          <tr><td>Local AI (Cortega, inference server, Father mode)</td><td>20</td><td>70%</td></tr>
+          <tr><td>Debian, desktop and theme</td><td>15</td><td>90%</td></tr>
+          <tr><td>Father services (operators, web interface, devices, log)</td><td>15</td><td>70%</td></tr>
+          <tr><td>Local AI (Cortega, Father mode)</td><td>20</td><td>70%</td></tr>
           <tr><td>Tor network and browser</td><td>10</td><td>85%</td></tr>
           <tr><td>Installation on real hardware (external disk, Secure Boot, Wi-Fi)</td><td>25</td><td>5%</td></tr>
           <tr><td>Real Operator connected</td><td>10</td><td>25%</td></tr>
-          <tr><td>Hardening, documentation, release</td><td>5</td><td>20%</td></tr>
+          <tr><td>Hardening, documents, release</td><td>5</td><td>20%</td></tr>
         </tbody>
       </table>
       </div>
-      <p>The software inside the VM is well advanced. Most of the remaining work is outside the VM: real hardware, a real Operator and final polish.</p>
+      <p>The software inside the virtual machine is well advanced. Most of the work left is outside it: real hardware, a real Operator and final polish.</p>
     </div>
     </details>
     </div>
@@ -274,23 +274,23 @@
     <span class="t-when">2026-11-25 // Report 03</span>
     <h3 id="r03">Father in the VM: installer, onion operators and node-map interface</h3>
     <div class="t-body" id="report-03-body">
-    <p>Third report. Citadel Father still runs only inside a virtual machine. It now has a single installer, a local certificate authority, one identity per operator, updates through Tor only and an interface built on a node map. Readiness is 70 percent, 52 of 74 items closed, measured with the method described at the end.</p>
+    <p>Third report. Citadel Father still runs only inside a virtual machine. It now has one installer, its own certificate authority, one identity for each operator, updates only through Tor, and a new interface built on a node map. Readiness is 70 percent (52 items closed out of 74), measured with the method at the end.</p>
 
     <details class="panel folder" id="r03-install" open><summary><span class="fname">Section // Installer, services and web UI</span></summary>
     <div class="folder-body">
       <h4>Installer</h4>
       <ul class="tick">
-        <li><b>Single installer.</b> One installer sets up Father on Debian 13, in steps 0 to 11 with a check at every step. It ran with all steps OK inside the VM.</li>
-        <li><b>Kit.</b> Old versions, old binaries and the old operator knowledge base were moved out of the kit. Documents and installation guide are aligned. One start script remains for the VM: 8 CPUs, 6 GB of RAM, full HD.</li>
-        <li><b>Services.</b> The local inference service and the Cortega service are now enabled by the installer. The inference server had gone missing after an earlier install; the new installer restores it. Verified: health check OK and Cortega answers.</li>
-        <li><b>citadel-father as a service.</b> It exited immediately under systemd: its interactive console read an empty input and returned status 0, so no restart happened. A daemon flag now starts it without the console. Verified in the VM, with the web UI reachable.</li>
-        <li><b>VM restart.</b> A guest reset used to stop the emulator and leave a frozen screen. The start script now asks "restart the VM?" and reopens it. Verified.</li>
+        <li><b>One installer.</b> A single installer sets up Father on Debian 13 in 12 steps (0 to 11) and checks each one. It ran with every step OK in the virtual machine.</li>
+        <li><b>Tidy kit.</b> Old versions and old files were moved out. Documents and the install guide are up to date. One start script is left for the virtual machine: 8 processors, 6 GB of memory, full HD.</li>
+        <li><b>AI services.</b> The installer now turns on the local AI engine and Cortega. The AI engine had gone missing after an earlier install, and the new installer brings it back. Checked: it responds and Cortega answers.</li>
+        <li><b>Father as a service.</b> It used to quit right after starting, because its console read empty input and stopped without an error, so nothing restarted it. A new option starts it without the console. Checked: the web interface is reachable.</li>
+        <li><b>Restarting the virtual machine.</b> A reset used to stop the emulator and leave a frozen screen. Now the start script asks "restart the VM?" and reopens it. Checked.</li>
       </ul>
       <h4>Web UI</h4>
       <ul class="tick">
-        <li><b>Local certificate authority.</b> Father generates its own Citadel CA and signs the web UI certificate with it. The CA is trusted in the browser of Father only. On other machines the browser warning remains, by choice. Verified.</li>
-        <li><b>Confirmation.</b> scan_lan and message sent from the web UI require typing CONFERMA. Authorising and revoking an operator require it too. Verified.</li>
-        <li><b>Sessions.</b> Web UI sessions last 1 hour and survive a restart of the service. Only hashes of session ids are stored on disk. Verified.</li>
+        <li><b>Own certificate authority.</b> Father creates its own Citadel certificate authority and uses it to sign the certificate of the web interface. Only the browser of Father trusts it. On other machines the browser warning stays, on purpose. Checked.</li>
+        <li><b>Confirmation.</b> Scanning the network and sending a message from the web interface need the word CONFERMA. So do authorising and revoking an operator. Checked.</li>
+        <li><b>Sessions.</b> A web session lasts 1 hour and survives a restart of the service. Only a scrambled version of the session ID is saved on disk. Checked.</li>
       </ul>
     </div>
     </details>
@@ -299,21 +299,21 @@
     <div class="folder-body">
       <h4>Tor and updates</h4>
       <ul class="tick">
-        <li><b>apt through Tor.</b> Updates come only from the official Debian onion mirrors, through apt-transport-tor. They work in Tor-only mode, and resolving the clear-net mirror fails, as intended. Verified.</li>
-        <li><b>citadel-net.</b> A bug is fixed: without administrator rights the status command printed "on" instead of the real mode. Verified.</li>
-        <li><b>Onion service of Father.</b> It publishes only the operator port. The web UI is not published on Tor. An operator reached Father through the onion address. Verified.</li>
+        <li><b>Updates through Tor.</b> Updates come only from the official Debian onion mirrors. They work in Tor-only mode, and the normal Internet mirror fails on purpose. Checked.</li>
+        <li><b>Network switch.</b> Fixed a bug: without admin rights, the status command showed "on" instead of the real mode. Checked.</li>
+        <li><b>Onion service of Father.</b> It publishes only the operator connection. The web interface is not published on Tor. An operator reached Father through the onion address. Checked.</li>
       </ul>
       <h4>Operators</h4>
       <ul class="tick">
-        <li><b>One identity per operator.</b> Handshake v2: the operator signs the challenge of Father with its own Ed25519 key. Father checks the signature and that the key is in the authorised list, then answers with its own signature, which the operator verifies. Unauthorised operators are refused and audited by id only.</li>
-        <li><b>Revocation.</b> Removing an operator from the list closes its sessions at once and blocks reconnection. The shared fleet key is kept only for recognition on the LAN. Verified from Father Signals: authorisation with CONFERMA, connection through onion, verified ping, revocation, refused reconnection.</li>
-        <li><b>Authorisation requests.</b> An operator with a valid signature but an unknown key appears in a REQUESTS screen of Father Signals, up to 20 requests, kept for 24 hours. Father can authorise it with CONFERMA or ignore it.</li>
+        <li><b>One identity per operator.</b> The operator proves who it is by signing a challenge from Father with its own key. Father checks the signature and that the key is on the authorised list, then proves itself back with its own signature. Unauthorised operators are refused and logged by ID only.</li>
+        <li><b>Revocation.</b> Removing an operator from the list closes its sessions at once and blocks it from reconnecting. The shared key stays only to recognise devices on the local network. Checked from Father Signals: authorise with CONFERMA, connect through onion, ping, revoke, refused reconnection.</li>
+        <li><b>Requests.</b> An operator with a valid signature but an unknown key shows up in a REQUESTS screen, up to 20 requests for 24 hours. Father can authorise it with CONFERMA or ignore it.</li>
       </ul>
       <h4>Cortega as operator</h4>
       <ul class="tick">
-        <li><b>Link to Father.</b> Cortega connects to Father at every start, with retries every 10 to 60 seconds. A received directive is shown to the user. /esegui N runs it only through the gates and always asks for CONFERMA. /rifiuta N discards it. The first connection appears in REQUESTS.</li>
-        <li><b>Signature of Father.</b> The Father package of Cortega now verifies the Ed25519 signature of Father. The old HMAC is gone.</li>
-        <li><b>Cortega operator test.</b> A test inside Father runs 7 steps with a temporary key. Result: 7 of 7 OK. Start 207 ms, refusal through onion 3843 ms, connection after authorisation 11072 ms, status to ack 443 ms, ping to ack 320 ms. The test leaves no trace: its key is never added to the authorised list.</li>
+        <li><b>Link to Father.</b> Cortega connects to Father at every start and retries every 10 to 60 seconds. An order received is shown to the user, who can run it (still with a CONFERMA) or discard it. The first connection appears in REQUESTS.</li>
+        <li><b>Signature of Father.</b> Cortega now checks the signature of Father. The old method is gone.</li>
+        <li><b>Operator test.</b> A test inside Father runs 7 steps with a temporary key. Result: 7 of 7 passed. A refusal through onion takes about 4 seconds, and the first connection after authorisation about 11 seconds. Status and ping get a reply in under half a second. The test leaves no trace: its key is never added to the authorised list.</li>
       </ul>
     </div>
     </details>
@@ -321,25 +321,32 @@
     <details class="panel folder" id="r03-cortega"><summary><span class="fname">Section // Cortega</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li><b>Router.</b> The intent router now passes 35 of 35 test sentences, up from 34 of 35. The request to create a script that shows date and time is now read correctly. The larger precision profile is the new default.</li>
-        <li><b>Generated tools.</b> Sum of 1 to 100: 20 seconds in total, one version, output 5050 correct. Prime numbers below 30: 38 seconds, one version, output correct. The isolation of /run is active in the VM.</li>
-        <li><b>Speed.</b> Start of the AI Terminal in 10 to 15 seconds. Prompt reading at 117 tokens per second. Generation speed was not read. The desktop stays fluid while Cortega generates.</li>
-        <li><b>Inference engine.</b> Decision: llama.cpp stays pinned for Father. No own engine in Go.</li>
+        <li><b>Understanding requests.</b> Cortega now understands 35 of 35 test sentences, up from 34. A request to create a script that shows date and time is now read correctly. The more precise profile is now the default.</li>
+        <li><b>Tools she writes.</b> Sum of 1 to 100: 20 seconds in total, correct result (5050). Prime numbers below 30: 38 seconds, correct result. Tools run in an isolated space inside the virtual machine.</li>
+        <li><b>Speed.</b> The AI Terminal starts in 10 to 15 seconds. She reads a prompt at 117 tokens per second (the speed of writing was not read). The desktop stays smooth while Cortega writes.</li>
+        <li><b>AI engine.</b> Decision: we keep llama.cpp for Father and we will not build our own engine in Go.</li>
       </ul>
     </div>
     </details>
 
     <details class="panel folder" id="r03-ui"><summary><span class="fname">Section // Node-map interface</span></summary>
     <div class="folder-body">
-      <p>Citadel OS Father now follows one interface idea: a node map in red and black ASCII. The overworld leads to the programs, and each program has its own map.</p>
+      <p>Citadel OS Father now follows one interface idea: a node map in red and black ASCII. The main map leads to the programs, and each program has its own map.</p>
+      <div class="shots real land">
+        <a class="shot" href="assets/citadelos/overworld-start.png" target="_blank" rel="noopener noreferrer"><img src="assets/citadelos/overworld-start.png" width="947" height="539" loading="lazy" alt="Screenshot of the main map: the CITADEL emblem in the center with PROGRAMS, FATHER SIGNALS, SYSTEM and NETWORK around it"></a>
+        <a class="shot" href="assets/citadelos/overworld-view.png" target="_blank" rel="noopener noreferrer"><img src="assets/citadelos/overworld-view.png" width="1920" height="1080" loading="lazy" alt="Screenshot of the main map with all branches open: programs, system settings and network modes, with Tor only selected in green"></a>
+      </div>
+      <p class="small dim">Main map, first view: CITADEL in the center, with PROGRAMS, FATHER SIGNALS, SYSTEM and NETWORK around it.</p>
+      <p class="small dim">Main map with all branches open: programs, system settings and network modes. Tor only is selected, in green.</p>
+      <p class="small dim">Screenshots taken in test mode, outside Citadel OS. The labels on the map are in Italian.</p>
       <ul class="tick">
-        <li><b>Overworld.</b> Full-screen map: CITADEL leads to PROGRAMS (AI Terminal, Terminal, Files, Browser), FATHER SIGNALS, NETWORK (Off, Tor only, Free with CONFERMA, Tor status) and SYSTEM (Resources, Keyboard and screen, Animation, Restart and Shutdown with CONFERMA). A program opens maximised above the map, and closing it returns to the overworld. The transition dissolves the map into falling characters and recomposes it.</li>
+        <li><b>Main map.</b> A full-screen map. CITADEL leads to PROGRAMS (AI Terminal, Terminal, Files, Browser), FATHER SIGNALS, NETWORK (Off, Tor only, Free with CONFERMA, Tor status) and SYSTEM (Resources, Keyboard and screen, Animation, Restart and Shutdown with CONFERMA). A program opens full-screen above the map, and closing it brings you back. The map dissolves into falling characters and builds itself again.</li>
         <li><b>Workspaces.</b> SYSTEM, SPACES, SPACE 1 to 4, with the active one in green.</li>
-        <li><b>Emblem.</b> The CITADEL node, the wallpaper, the login screen and the boot splash use an ASCII version generated from the original Citadel logo. In the boot splash the emblem recomposes from falling characters. Verified.</li>
-        <li><b>Top bar.</b> A single ASCII line: program, windows, space, network, CPU, RAM, AI, date and time. Verified.</li>
-        <li><b>Father Signals.</b> Opens the web UI of Father already authenticated, without typing the token. Its home is an ASCII node map: OPERATOR NETWORK (connected, authorised, directives, requests), SETTINGS AND BENCHMARK, AUDIT. Operator windows offer STATUS, PING and MESSAGE buttons. Verified.</li>
-        <li><b>Benchmark.</b> Three tests, with 1 to 5 repetitions and a stored history. Operator test through onion: circuit 424 to 610 ms, handshake 408 to 512 ms, directive and ack 512 to 518 ms, total 1352 to 1535 ms. Tor and SOCKS: check of the Tor circuit in 803 to 943 ms, Tor confirmed. Debian onion mirror: OK. Measured in the VM.</li>
-        <li><b>Animation load.</b> The map now draws on a canvas with pre-rendered glyphs. In a test container the CPU use of the web engine fell from 82 percent to 15 percent. A setting offers full (10 frames per second), reduced (4, no rain) or off. Not yet measured in the VM.</li>
+        <li><b>Emblem.</b> The central CITADEL node, the wallpaper, the login screen and the boot screen use an ASCII version of the Citadel logo. On the boot screen the emblem builds itself from falling characters. Checked.</li>
+        <li><b>Top bar.</b> One ASCII line with program, windows, space, network, CPU, memory, AI, date and time. Checked.</li>
+        <li><b>Father Signals.</b> Opens the web interface already signed in, with no token to type. Its home is an ASCII node map: OPERATOR NETWORK (connected, authorised, orders, requests), SETTINGS AND BENCHMARK, and AUDIT. Operator windows have STATUS, PING and MESSAGE buttons. Checked.</li>
+        <li><b>Benchmark.</b> Three tests, repeated 1 to 5 times, with a saved history. Operator test through onion: about 1.4 to 1.5 seconds in total. Tor check: under 1 second, Tor confirmed. Debian onion mirror: OK. All measured in the virtual machine.</li>
+        <li><b>Animation load.</b> The map now draws on a canvas with pre-drawn characters. In a test container, the browser's CPU use fell from 82 percent to 15 percent. A setting offers full (10 frames per second), reduced (4, no rain) or off. Not yet measured in the virtual machine.</li>
       </ul>
     </div>
     </details>
@@ -347,14 +354,14 @@
     <details class="panel folder" id="r03-open"><summary><span class="fname">Section // Open items and not verified</span></summary>
     <div class="folder-body">
       <ul class="tick">
-        <li><b>Animation smoothness.</b> Slight stutters of the rain and the pulses in the VM. Cause not measured yet.</li>
-        <li><b>Overworld to Father Signals and back.</b> Not yet tried in the VM.</li>
-        <li><b>Operator consultation transport.</b> The way an operator consults Father is not defined yet.</li>
-        <li><b>Real operator.</b> No real operator has connected to Father yet. Only the simulator and the test Cortega have.</li>
-        <li><b>Cortega for Father, not done yet.</b> A gate that blocks should say which gate it is and how to change it. Graphical and interactive generated programs: today only text programs. A check on the structure of generated code before the test run: an earlier failure came from code that called main() without defining it. "Test OK" still means run without errors, not correct result. Semantic retrieval for the knowledge base. An app to choose the model by purpose. Support to reproduce attacks in an isolated laboratory, on own or authorised networks only.</li>
-        <li><b>Web answers.</b> Minor problems in the answers that use web search: reported, not yet described.</li>
-        <li><b>Interface.</b> Windows of the file manager and dialogs are opaque: transparency applies only to Citadel terminals and panels. The licence of one interface font is not verified.</li>
-        <li><b>Installer.</b> One run failed at the file transfer step because the connection was closed. The second run succeeded. Cause not determined. A first run of the Cortega operator test failed too, probably because the onion service had just been republished. Not verified.</li>
+        <li><b>Animation smoothness.</b> Small stutters in the rain and pulses in the virtual machine. Cause not measured yet.</li>
+        <li><b>Main map to Father Signals and back.</b> Not yet tried in the virtual machine.</li>
+        <li><b>Operator consultation.</b> How an operator consults Father is not defined yet.</li>
+        <li><b>Real operator.</b> No real operator has connected to Father yet, only the simulator and the test Cortega.</li>
+        <li><b>Still to do for Cortega on Father.</b> When a gate blocks something, it should say which gate it is and how to change it. Graphical and interactive programs written by Cortega: today only text programs. A check on the structure of generated code before the test run (an earlier failure came from code that called main() without defining it). "Test OK" still only means it ran without errors, not that the result is right. Smarter search in the knowledge base. An app to choose the model by purpose. Support to reproduce attacks in an isolated lab, on our own or authorised networks only.</li>
+        <li><b>Web answers.</b> Small problems when the AI uses web search: noted, not yet described.</li>
+        <li><b>Interface.</b> File manager windows and dialogs are opaque: transparency applies only to Citadel terminals and panels. The licence of one interface font is not verified.</li>
+        <li><b>Installer.</b> One run failed during the file transfer because the connection closed. The second run worked. Cause not found. A first run of the Cortega operator test also failed, probably because the onion service had just been republished. Not verified.</li>
         <li><b>Checksum.</b> The checksum of the Debian ISO was not compared with the official list.</li>
       </ul>
     </div>
@@ -363,19 +370,19 @@
     <details class="panel folder" id="r03-next"><summary><span class="fname">Section // Next steps</span></summary>
     <div class="folder-body">
       <ol class="tick">
-        <li>Measure the animation (frames per second, draw time, CPU in the VM), then reduce load if needed. Then try overworld, Father Signals and back in the VM.</li>
-        <li>Define the transport for the consultation of Father by an operator, and connect a real operator or an operator on a PC. Proposed tests: DNS leak, TCP reachability on the LAN, stability of the operator session, time to publish the onion service.</li>
-        <li>Cortega block for Father: the items listed in the open items, and the check on the structure of generated code.</li>
-        <li>Minor items: transparency of the file manager, font licence, ISO checksum.</li>
-        <li>At 90 percent readiness: start the installation on real storage. Until then only the VM.</li>
+        <li>Measure the animation (frames per second, draw time, CPU in the virtual machine) and lighten it if needed. Then try main map, Father Signals and back.</li>
+        <li>Define how an operator consults Father, and connect a real operator or an operator on a PC. Proposed tests: DNS leak, reachability on the local network, stability of the operator session, time to publish the onion service.</li>
+        <li>Finish the Cortega items for Father listed in the open items, including the check on generated code.</li>
+        <li>Small items: file manager transparency, font licence, ISO checksum.</li>
+        <li>At 90 percent readiness: start installing on real storage. Until then, only the virtual machine.</li>
       </ol>
     </div>
     </details>
 
     <details class="panel folder" id="r03-readiness" open><summary><span class="fname">Section // Readiness: 70 percent (52 of 74)</span></summary>
     <div class="folder-body">
-      <p>Constraint of the project: Father is not installed on any real storage until readiness reaches 90 percent. Until then work happens only in the VM.</p>
-      <p>Method: closed items divided by total items of the issue register for Father (installer, services, interface, network, Cortega, performance, security, kit and documents). An item is closed when it is done and verified, when its data is collected, or when its doubt is decided with no work left. Items that need an installation on storage are excluded. This method differs from the weighted estimate of Report 02, so the two figures are not comparable.</p>
+      <p>The rule of the project: Father is not installed on any real storage until readiness reaches 90 percent. Until then, we work only in the virtual machine.</p>
+      <p>How it is measured: closed items divided by all items of the Father issue register (installer, services, interface, network, Cortega, performance, security, kit and documents). An item is closed when it is done and checked, when its data is collected, or when a doubt is decided and no work is left. Items that need installation on storage are not counted. This differs from the weighted estimate of Report 02, so the two numbers cannot be compared.</p>
       <div class="tblwrap">
       <table class="tbl">
         <thead><tr><th scope="col">Moment</th><th scope="col">Closed items</th><th scope="col">Readiness</th></tr></thead>
