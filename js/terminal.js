@@ -112,10 +112,11 @@
       "openappdev":["apps.html","App Development"], "openappdevelopment":["apps.html","App Development"], "openappdevelopments":["apps.html","App Development"], "appdev":["apps.html","App Development"], "openapps":["apps.html","App Development"],
       "opengamedev":["games.html","Game Development"], "opengamedevelopment":["games.html","Game Development"], "gamedev":["games.html","Game Development"], "opengames":["games.html","Game Development"],
       "opencitadelos":["citadelos.html","CitadelOS"], "citadelos":["citadelos.html","CitadelOS"], "opencortega":["citadelos.html","CitadelOS"], "cortega":["citadelos.html","CitadelOS"],
+      "openabout":["about.html","About the Team"], "about":["about.html","About the Team"], "aboutus":["about.html","About the Team"], "openaboutus":["about.html","About the Team"], "openteam":["about.html","About the Team"], "team":["about.html","About the Team"],
       "opencommissions":["commissions.html","Commissions"], "commissions":["commissions.html","Commissions"], "commission":["commissions.html","Commissions"], "opencommission":["commissions.html","Commissions"], "hire":["commissions.html","Commissions"], "hirecitadel":["commissions.html","Commissions"],
       "seekcitadel":["contact.html","Contact"], "contact":["contact.html","Contact"], "opencontact":["contact.html","Contact"]
     };
-    var LABEL = { "home.html":"open Home", "apps.html":"open AppDev", "games.html":"open GameDev", "citadelos.html":"open CitadelOS", "commissions.html":"open Commissions", "contact.html":"seek Citadel" };
+    var LABEL = { "home.html":"open Home", "apps.html":"open AppDev", "games.html":"open GameDev", "citadelos.html":"open CitadelOS", "about.html":"open About", "commissions.html":"open Commissions", "contact.html":"seek Citadel" };
     function say(text, cls){
       var p = document.createElement("p"); if(cls) p.className = cls; p.textContent = text; cout.appendChild(p);
       while(cout.children.length > 60) cout.removeChild(cout.firstChild);
@@ -184,6 +185,7 @@
         say(T("open AppDev — App Development"));
         say(T("open GameDev — Game Development"));
         say(T("open CitadelOS — CitadelOS and Cortega development timeline"));
+        say(T("open About — About the Team"));
         say(T("open Commissions — hire the Citadel technicians"));
         say(T("seek Citadel — Contact"));
         say(T("clear — clear the console"));
